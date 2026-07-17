@@ -8,57 +8,142 @@
     Title="Calculadora">
     <ContentPage.Resources>
         <Style x:Key="CalcButton" TargetType="Button">
-            <Setter Property="HeightRequest" Value="{OnIdiom Phone=48, Desktop=54}" />
+            <Setter Property="HeightRequest" Value="{OnIdiom Phone=66, Tablet=60, Desktop=58}" />
             <Setter Property="Padding" Value="4" />
-            <Setter Property="FontSize" Value="{OnIdiom Phone=15, Desktop=17}" />
-            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource SurfaceVariant}, Dark={StaticResource Gray600}}" />
-            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+            <Setter Property="FontSize" Value="{OnIdiom Phone=20, Tablet=18, Desktop=18}" />
+            <Setter Property="FontFamily" Value="OpenSansSemibold" />
+            <Setter Property="CornerRadius" Value="14" />
+            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Surface}, Dark={StaticResource SurfaceMutedDark}}" />
+            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource White}}" />
+            <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Border}, Dark={StaticResource BorderDark}}" />
+            <Setter Property="BorderWidth" Value="1" />
         </Style>
         <Style x:Key="FunctionButton" TargetType="Button" BasedOn="{StaticResource CalcButton}">
             <Setter Property="BackgroundColor" Value="{StaticResource Secondary}" />
             <Setter Property="TextColor" Value="White" />
+            <Setter Property="BorderColor" Value="{StaticResource Secondary}" />
         </Style>
         <Style x:Key="OperatorButton" TargetType="Button" BasedOn="{StaticResource CalcButton}">
             <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
             <Setter Property="TextColor" Value="White" />
+            <Setter Property="BorderColor" Value="{StaticResource Primary}" />
+        </Style>
+        <Style x:Key="ErrorCalcButton" TargetType="Button" BasedOn="{StaticResource CalcButton}">
+            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource ErrorSoft}, Dark={StaticResource ErrorSoftDark}}" />
+            <Setter Property="TextColor" Value="{StaticResource Error}" />
+            <Setter Property="BorderColor" Value="#FECACA" />
+        </Style>
+        <Style x:Key="ModeButton" TargetType="Button" BasedOn="{StaticResource CalcButton}">
+            <Setter Property="HeightRequest" Value="56" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Surface}, Dark={StaticResource SurfaceDark}}" />
+            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+            <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+        </Style>
+        <Style x:Key="AngleButton" TargetType="Button" BasedOn="{StaticResource FunctionButton}">
+            <Setter Property="HeightRequest" Value="56" />
+            <Setter Property="FontSize" Value="16" />
         </Style>
     </ContentPage.Resources>
 
-    <ScrollView>
+    <ScrollView HorizontalOptions="Fill">
         <VerticalStackLayout
-            Padding="{OnIdiom Phone='12,14,12,30', Desktop='36,24'}"
-            Spacing="10"
-            MaximumWidthRequest="720"
-            HorizontalOptions="Center">
-            <Border Padding="18" StrokeShape="RoundRectangle 16" HeightRequest="145">
-                <VerticalStackLayout HorizontalOptions="End" VerticalOptions="Center">
-                    <Label Text="{Binding AngleUnit}" HorizontalTextAlignment="End" TextColor="{StaticResource Gray500}" />
-                    <Label Text="{Binding PreviousExpression}" HorizontalTextAlignment="End" LineBreakMode="TailTruncation" />
+            Padding="{OnIdiom Phone='16,18,16,28', Tablet='28,24,28,36', Desktop='40,28,40,40'}"
+            Spacing="14"
+            MaximumWidthRequest="580"
+            HorizontalOptions="Fill">
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                <Border
+                    WidthRequest="30"
+                    HeightRequest="30"
+                    BackgroundColor="{StaticResource Primary}"
+                    Stroke="Transparent"
+                    StrokeShape="RoundRectangle 8">
                     <Label
+                        Text="✣"
+                        TextColor="White"
+                        FontSize="19"
+                        HorizontalTextAlignment="Center"
+                        VerticalTextAlignment="Center" />
+                </Border>
+                <Label
+                    Grid.Column="1"
+                    Text="TextilCalc"
+                    FontSize="20"
+                    FontFamily="OpenSansSemibold"
+                    VerticalTextAlignment="Center" />
+            </Grid>
+
+            <VerticalStackLayout Spacing="3" Margin="0,8,0,2">
+                <Label
+                    Text="Calculadora"
+                    FontSize="{OnIdiom Phone=38, Tablet=36, Desktop=36}"
+                    FontFamily="OpenSansSemibold"
+                    TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource White}}" />
+                <Label Text="Operaciones básicas y científicas con memoria." Style="{StaticResource PageSubtitle}" />
+            </VerticalStackLayout>
+
+            <Border Style="{StaticResource TextilCard}" Padding="18" HeightRequest="{OnIdiom Phone=190, Tablet=170, Desktop=170}">
+                <Grid RowDefinitions="Auto,*,Auto">
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                        <Border
+                            IsVisible="{Binding HasMemory}"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource PrimarySoft}, Dark={StaticResource PrimarySoftDark}}"
+                            Stroke="Transparent"
+                            StrokeShape="RoundRectangle 9"
+                            Padding="9,4"
+                            HorizontalOptions="Start">
+                            <Label Text="{Binding MemoryDisplay}" FontSize="11" FontFamily="OpenSansSemibold" TextColor="{StaticResource Primary}" />
+                        </Border>
+                        <Border
+                            Grid.Column="1"
+                            BackgroundColor="{AppThemeBinding Light=#ECFDF5, Dark={StaticResource SuccessSoftDark}}"
+                            Stroke="#99F6E4"
+                            StrokeShape="RoundRectangle 18"
+                            Padding="13,6">
+                            <Label
+                                Text="{Binding AngleUnit}"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="12"
+                                TextColor="{StaticResource Secondary}" />
+                        </Border>
+                    </Grid>
+                    <Label Grid.Row="1" Text="{Binding PreviousExpression}" HorizontalTextAlignment="End" LineBreakMode="TailTruncation" Style="{StaticResource MutedText}" VerticalTextAlignment="End" />
+                    <Label
+                        Grid.Row="2"
                         Text="{Binding DisplayValue}"
                         HorizontalTextAlignment="End"
-                        FontSize="{OnIdiom Phone=32, Desktop=40}"
-                        FontAttributes="Bold"
-                        LineBreakMode="TailTruncation" />
-                </VerticalStackLayout>
+                        FontSize="{OnIdiom Phone=48, Tablet=42, Desktop=42}"
+                        FontFamily="OpenSansSemibold"
+                        LineBreakMode="TailTruncation"
+                        SemanticProperties.Description="{Binding DisplayValue}">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding IsError}" Value="True">
+                                <Setter Property="TextColor" Value="{StaticResource Error}" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </Grid>
             </Border>
 
             <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
                 <Button
-                    Text="{Binding IsExpanded, StringFormat='Científica: {0}'}"
+                    Text="{Binding ScientificModeLabel, StringFormat='▦  {0}'}"
                     Command="{Binding ApplyFunctionCommand}"
                     CommandParameter="TOGGLE"
-                    Style="{StaticResource SecondaryButtonStyle}" />
+                    Style="{StaticResource ModeButton}"
+                    SemanticProperties.Hint="Muestra u oculta las funciones científicas" />
                 <Button
                     Grid.Column="1"
-                    Text="{Binding AngleUnit}"
+                    Text="{Binding AngleUnit, StringFormat='⌾  {0}        ⌄'}"
                     Command="{Binding ApplyFunctionCommand}"
                     CommandParameter="ANGLE"
-                    Style="{StaticResource FunctionButton}" />
+                    Style="{StaticResource AngleButton}"
+                    SemanticProperties.Hint="Cambia la unidad angular" />
             </Grid>
 
-            <VerticalStackLayout IsVisible="{Binding IsExpanded}" Spacing="6">
-                <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="6">
+            <VerticalStackLayout IsVisible="{Binding IsExpanded}" Spacing="8">
+                <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="8">
                     <Button Text="sin" Command="{Binding ApplyFunctionCommand}" CommandParameter="SIN" Style="{StaticResource FunctionButton}" />
                     <Button Grid.Column="1" Text="cos" Command="{Binding ApplyFunctionCommand}" CommandParameter="COS" Style="{StaticResource FunctionButton}" />
                     <Button Grid.Column="2" Text="tan" Command="{Binding ApplyFunctionCommand}" CommandParameter="TAN" Style="{StaticResource FunctionButton}" />
@@ -114,11 +199,11 @@
                 </Grid>
             </VerticalStackLayout>
 
-            <Grid ColumnDefinitions="*,*,*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" ColumnSpacing="6" RowSpacing="6">
+            <Grid ColumnDefinitions="*,*,*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" ColumnSpacing="8" RowSpacing="8">
                 <Button Text="(" Command="{Binding InputCommand}" CommandParameter="(" Style="{StaticResource CalcButton}" />
                 <Button Grid.Column="1" Text=")" Command="{Binding InputCommand}" CommandParameter=")" Style="{StaticResource CalcButton}" />
-                <Button Grid.Column="2" Text="C" Command="{Binding InputCommand}" CommandParameter="C" BackgroundColor="{StaticResource Error}" />
-                <Button Grid.Column="3" Text="⌫" Command="{Binding InputCommand}" CommandParameter="⌫" BackgroundColor="{StaticResource Error}" />
+                <Button Grid.Column="2" Text="C" Command="{Binding InputCommand}" CommandParameter="C" Style="{StaticResource ErrorCalcButton}" SemanticProperties.Description="Borrar todo" />
+                <Button Grid.Column="3" Text="⌫" Command="{Binding InputCommand}" CommandParameter="⌫" Style="{StaticResource ErrorCalcButton}" SemanticProperties.Description="Borrar último carácter" />
 
                 <Button Grid.Row="1" Text="7" Command="{Binding InputCommand}" CommandParameter="7" Style="{StaticResource CalcButton}" />
                 <Button Grid.Row="1" Grid.Column="1" Text="8" Command="{Binding InputCommand}" CommandParameter="8" Style="{StaticResource CalcButton}" />
@@ -143,7 +228,11 @@
                 <Button Grid.Row="5" Grid.ColumnSpan="4" Text="=" Command="{Binding InputCommand}" CommandParameter="=" Style="{StaticResource OperatorButton}" />
             </Grid>
 
-            <Button Text="Volver al menú" Command="{Binding GoBackCommand}" Style="{StaticResource SecondaryButtonStyle}" />
+            <Button
+                Text="←  Volver"
+                Command="{Binding GoBackCommand}"
+                Style="{StaticResource ModeButton}"
+                Margin="0,2,0,0" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

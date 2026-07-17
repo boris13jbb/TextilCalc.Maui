@@ -31,6 +31,7 @@ public partial class GramaturaViewModel : ObservableObject
     }
 
     public bool HasResult => Gsm.HasValue;
+    public bool HasNoResult => !HasResult;
     public bool HasError => !string.IsNullOrWhiteSpace(Error);
     public string GsmDisplay => Gsm?.ToString("N4") ?? "--";
     public string AreaDisplay => AreaM2?.ToString("N4") ?? "--";
@@ -98,6 +99,7 @@ public partial class GramaturaViewModel : ObservableObject
     private void NotifyResults()
     {
         OnPropertyChanged(nameof(HasResult));
+        OnPropertyChanged(nameof(HasNoResult));
         OnPropertyChanged(nameof(GsmDisplay));
         OnPropertyChanged(nameof(AreaDisplay));
         OnPropertyChanged(nameof(RendimientoDisplay));

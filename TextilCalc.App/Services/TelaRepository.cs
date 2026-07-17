@@ -1,3 +1,4 @@
+using System.Globalization;
 using LiteDB;
 using TextilCalc.App.Data;
 using TextilCalc.App.Models;
@@ -35,6 +36,10 @@ public sealed class TelaRepository : ITelaRepository
                 if (collection.Count() == 0)
                 {
                     collection.InsertBulk(DefaultTelas.Create());
+                }
+                else
+                {
+                    NormalizeExistingNames(collection);
                 }
             });
             _initialized = true;
@@ -141,6 +146,7 @@ public sealed class TelaRepository : ITelaRepository
                     {
                         if (existing.TryGetValue(imported.Nombre, out var current))
                         {
+                            current.Nombre = imported.Nombre;
                             current.Gramatura = imported.Gramatura;
                             current.Ancho = imported.Ancho ?? current.Ancho;
                             collection.Update(current);
@@ -176,7 +182,7 @@ public sealed class TelaRepository : ITelaRepository
 
     private static void Validate(Tela tela)
     {
-        tela.Nombre = tela.Nombre.Trim();
+        tela.Nombre = NormalizeNombre(tela.Nombre);
         if (tela.Nombre.Length == 0)
         {
             throw new ArgumentException("El nombre de la tela es obligatorio.", nameof(tela));
@@ -192,4 +198,25 @@ public sealed class TelaRepository : ITelaRepository
             throw new ArgumentException("El ancho debe ser mayor que cero.", nameof(tela));
         }
     }
+
+    /// <summary>
+    /// Convierte nombres existentes a mayúsculas una sola vez al abrir la base.
+    /// </summary>
+    private static void NormalizeExistingNames(ILiteCollection<Tela> collection)
+    {
+        foreach (var tela in collection.FindAll())
+        {
+            var normalized = NormalizeNombre(tela.Nombre);
+            if (string.Equals(tela.Nombre, normalized, StringComparison.Ordinal))
+            {
+                continue;
+            }
+
+            tela.Nombre = normalized;
+            collection.Update(tela);
+        }
+    }
+
+    private static string NormalizeNombre(string? nombre) =>
+        (nombre ?? string.Empty).Trim().ToUpper(CultureInfo.CurrentCulture);
 }

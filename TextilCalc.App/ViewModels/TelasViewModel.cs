@@ -14,6 +14,8 @@ public partial class TelasViewModel : ObservableObject
     private readonly IExcelService _excelService;
     private readonly IFileSaver _fileSaver;
     private readonly IUserDialogService _dialogs;
+    private readonly SemaphoreSlim _loadGate = new(1, 1);
+    private CancellationTokenSource? _searchDebounceCancellation;
 
     [ObservableProperty] public partial string SearchQuery { get; set; } = string.Empty;
     [ObservableProperty] public partial Tela? SelectedTela { get; set; }
@@ -51,7 +53,13 @@ public partial class TelasViewModel : ObservableObject
     public bool HasCalculatedMetraje => MetrajeCalculado.HasValue;
     public string MetrajeDisplay => MetrajeCalculado?.ToString("N2") ?? "--";
 
-    partial void OnSearchQueryChanged(string value) => _ = LoadAsync();
+    partial void OnSearchQueryChanged(string value)
+    {
+        _searchDebounceCancellation?.Cancel();
+        _searchDebounceCancellation?.Dispose();
+        _searchDebounceCancellation = new CancellationTokenSource();
+        _ = DebounceSearchAsync(_searchDebounceCancellation.Token);
+    }
 
     partial void OnSelectedTelaChanged(Tela? value)
     {
@@ -68,11 +76,7 @@ public partial class TelasViewModel : ObservableObject
     [RelayCommand]
     public async Task LoadAsync()
     {
-        if (IsBusy)
-        {
-            return;
-        }
-
+        await _loadGate.WaitAsync();
         IsBusy = true;
         Error = null;
         try
@@ -91,6 +95,21 @@ public partial class TelasViewModel : ObservableObject
         finally
         {
             IsBusy = false;
+            _loadGate.Release();
+        }
+    }
+
+    private async Task DebounceSearchAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            await Task.Delay(300, cancellationToken);
+            SuccessMessage = null;
+            await LoadAsync();
+        }
+        catch (OperationCanceledException)
+        {
+            // A newer search value superseded this request.
         }
     }
 
@@ -103,6 +122,7 @@ public partial class TelasViewModel : ObservableObject
         FormGramatura = string.Empty;
         FormAncho = string.Empty;
         Error = null;
+        SuccessMessage = null;
         IsFormVisible = true;
     }
 
@@ -115,6 +135,7 @@ public partial class TelasViewModel : ObservableObject
         FormGramatura = tela.Gramatura.ToString("0.##");
         FormAncho = tela.Ancho?.ToString("0.##") ?? string.Empty;
         Error = null;
+        SuccessMessage = null;
         IsFormVisible = true;
     }
 
@@ -191,6 +212,7 @@ public partial class TelasViewModel : ObservableObject
             {
                 SelectedTela = null;
             }
+            SuccessMessage = $"“{tela.Nombre}” se eliminó correctamente.";
             await LoadAsync();
         }
         catch (Exception exception)
@@ -202,6 +224,7 @@ public partial class TelasViewModel : ObservableObject
     [RelayCommand]
     private void CalculateMetraje()
     {
+        SuccessMessage = null;
         if (SelectedTela is null)
         {
             Error = "Seleccione una tela.";

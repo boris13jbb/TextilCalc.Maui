@@ -7,7 +7,7 @@
     xmlns:vm="clr-namespace:TextilCalc.App.ViewModels"
     x:DataType="vm:TelasViewModel"
     Title="Gestión de telas"
-    BackgroundColor="{AppThemeBinding Light=#F5F7FB, Dark=#0F172A}">
+    BackgroundColor="{AppThemeBinding Light={StaticResource PageBackground}, Dark={StaticResource PageBackgroundDark}}">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -24,99 +24,22 @@
             <Color x:Key="TextilSurfaceDark">#111827</Color>
             <Color x:Key="TextilBorderDark">#334155</Color>
 
-            <Style x:Key="TextilCard" TargetType="Border">
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource TextilSurface}, Dark={StaticResource TextilSurfaceDark}}" />
-                <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource TextilBorder}, Dark={StaticResource TextilBorderDark}}" />
-                <Setter Property="StrokeThickness" Value="1" />
-                <Setter Property="StrokeShape" Value="RoundRectangle 18" />
-                <Setter Property="Padding" Value="{OnIdiom Phone=16, Tablet=20, Desktop=22}" />
-            </Style>
-
-            <Style x:Key="TextilInput" TargetType="Border">
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#FFFFFF, Dark=#0F172A}" />
-                <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource TextilBorder}, Dark={StaticResource TextilBorderDark}}" />
-                <Setter Property="StrokeThickness" Value="1" />
-                <Setter Property="StrokeShape" Value="RoundRectangle 12" />
-                <Setter Property="Padding" Value="4,0" />
-                <Setter Property="MinimumHeightRequest" Value="48" />
-            </Style>
-
-            <Style x:Key="PrimaryAction" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="{StaticResource TextilPrimary}" />
-                <Setter Property="TextColor" Value="White" />
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="FontSize" Value="14" />
-                <Setter Property="CornerRadius" Value="11" />
-                <Setter Property="Padding" Value="18,12" />
-                <Setter Property="MinimumHeightRequest" Value="46" />
-            </Style>
-
-            <Style x:Key="SecondaryAction" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=White, Dark=#0F172A}" />
-                <Setter Property="TextColor" Value="{StaticResource TextilPrimary}" />
-                <Setter Property="BorderColor" Value="{StaticResource TextilPrimary}" />
-                <Setter Property="BorderWidth" Value="1" />
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="FontSize" Value="14" />
-                <Setter Property="CornerRadius" Value="11" />
-                <Setter Property="Padding" Value="16,11" />
-                <Setter Property="MinimumHeightRequest" Value="44" />
-            </Style>
-
-            <Style x:Key="DangerAction" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource TextilDangerSoft}, Dark=#3B1114}" />
-                <Setter Property="TextColor" Value="{StaticResource TextilDanger}" />
-                <Setter Property="BorderColor" Value="#FECACA" />
-                <Setter Property="BorderWidth" Value="1" />
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="FontSize" Value="13" />
-                <Setter Property="CornerRadius" Value="10" />
-                <Setter Property="Padding" Value="12,9" />
-                <Setter Property="MinimumHeightRequest" Value="40" />
-                <Setter Property="MinimumWidthRequest" Value="40" />
-            </Style>
-
-            <Style x:Key="CompactSecondaryAction" TargetType="Button">
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#F8FAFC, Dark=#1E293B}" />
-                <Setter Property="TextColor" Value="{StaticResource TextilPrimary}" />
-                <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource TextilBorder}, Dark={StaticResource TextilBorderDark}}" />
-                <Setter Property="BorderWidth" Value="1" />
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="FontSize" Value="13" />
-                <Setter Property="CornerRadius" Value="10" />
-                <Setter Property="Padding" Value="12,9" />
-                <Setter Property="MinimumHeightRequest" Value="40" />
-                <Setter Property="MinimumWidthRequest" Value="40" />
-            </Style>
-
-            <Style x:Key="SectionTitle" TargetType="Label">
-                <Setter Property="FontSize" Value="18" />
-                <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TextilText}, Dark=White}" />
-            </Style>
-
-            <Style x:Key="MutedText" TargetType="Label">
-                <Setter Property="FontSize" Value="13" />
-                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource TextilMuted}, Dark=#94A3B8}" />
-            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ScrollView>
+    <ScrollView HorizontalOptions="Fill">
         <Grid
             Padding="{OnIdiom Phone='16,18,16,38', Tablet='26,24,26,42', Desktop='38,28,38,46'}"
             RowDefinitions="Auto,Auto,Auto,Auto"
             RowSpacing="18"
             MaximumWidthRequest="1500"
-            HorizontalOptions="Center">
+            HorizontalOptions="Fill">
 
             <Grid Grid.Row="0" ColumnDefinitions="*,Auto" ColumnSpacing="16">
                 <VerticalStackLayout Spacing="4" VerticalOptions="Center">
                     <Label
                         Text="Gestión de telas"
-                        FontSize="{OnIdiom Phone=28, Tablet=32, Desktop=34}"
-                        FontAttributes="Bold"
-                        TextColor="{AppThemeBinding Light={StaticResource TextilText}, Dark=White}" />
+                        Style="{StaticResource PageTitle}" />
                     <Label
                         Text="Administra, consulta y calcula el metraje de tus telas."
                         FontSize="14"
@@ -140,7 +63,8 @@
                         Text="{Binding SearchQuery}"
                         BackgroundColor="Transparent"
                         CancelButtonColor="{StaticResource TextilMuted}"
-                        HeightRequest="46" />
+                        HeightRequest="46"
+                        SemanticProperties.Hint="Filtra el catálogo por nombre" />
                 </Border>
 
                 <Border
@@ -192,7 +116,7 @@
                     IsVisible="{Binding IsFormVisible}"
                     Style="{StaticResource TextilCard}"
                     MaximumWidthRequest="760"
-                    HorizontalOptions="Center">
+                    HorizontalOptions="Fill">
                     <VerticalStackLayout Spacing="14">
                         <Grid ColumnDefinitions="*,Auto">
                             <VerticalStackLayout Spacing="3">
@@ -338,8 +262,27 @@
                             ItemsSource="{Binding Telas}"
                             SelectedItem="{Binding SelectedTela}"
                             SelectionMode="Single"
-                            HeightRequest="{OnIdiom Phone=390, Tablet=520, Desktop=570}"
-                            EmptyView="No hay telas registradas.">
+                            HeightRequest="{OnIdiom Phone=390, Tablet=520, Desktop=570}">
+                            <CollectionView.EmptyView>
+                                <VerticalStackLayout
+                                    Padding="20,38"
+                                    Spacing="10"
+                                    HorizontalOptions="Center">
+                                    <Label
+                                        Text="Catálogo vacío"
+                                        Style="{StaticResource SectionTitle}"
+                                        HorizontalTextAlignment="Center" />
+                                    <Label
+                                        Text="Agrega una tela o importa un archivo Excel para comenzar."
+                                        Style="{StaticResource MutedText}"
+                                        HorizontalTextAlignment="Center" />
+                                    <Button
+                                        Margin="0,6,0,0"
+                                        Text="Agregar primera tela"
+                                        Command="{Binding ShowAddFormCommand}"
+                                        Style="{StaticResource PrimaryAction}" />
+                                </VerticalStackLayout>
+                            </CollectionView.EmptyView>
                             <CollectionView.ItemsLayout>
                                 <LinearItemsLayout Orientation="Vertical" ItemSpacing="8" />
                             </CollectionView.ItemsLayout>

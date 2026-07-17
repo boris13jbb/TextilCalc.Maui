@@ -19,6 +19,11 @@ public partial class CalculadoraViewModel : ObservableObject
     [ObservableProperty] public partial string AngleUnit { get; set; } = "DEG";
     [ObservableProperty] public partial bool IsExpanded { get; set; }
 
+    public string ScientificModeLabel => IsExpanded ? "Ocultar funciones" : "Mostrar funciones";
+    public bool HasMemory => Math.Abs(MemoryValue) > double.Epsilon;
+    public string MemoryDisplay => $"M  {Format(MemoryValue)}";
+    public bool IsError => DisplayValue == "Error";
+
     public CalculadoraViewModel(ExpressionEvaluator evaluator, IAppPreferences preferences)
     {
         _evaluator = evaluator;
@@ -33,11 +38,24 @@ public partial class CalculadoraViewModel : ObservableObject
                             DisplayValue.Count(character => character == ')');
     }
 
-    partial void OnDisplayValueChanged(string value) => Save();
+    partial void OnDisplayValueChanged(string value)
+    {
+        OnPropertyChanged(nameof(IsError));
+        Save();
+    }
     partial void OnPreviousExpressionChanged(string value) => Save();
-    partial void OnMemoryValueChanged(double value) => Save();
+    partial void OnMemoryValueChanged(double value)
+    {
+        OnPropertyChanged(nameof(HasMemory));
+        OnPropertyChanged(nameof(MemoryDisplay));
+        Save();
+    }
     partial void OnAngleUnitChanged(string value) => Save();
-    partial void OnIsExpandedChanged(bool value) => Save();
+    partial void OnIsExpandedChanged(bool value)
+    {
+        OnPropertyChanged(nameof(ScientificModeLabel));
+        Save();
+    }
 
     [RelayCommand]
     private void Input(string value)

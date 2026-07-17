@@ -29,6 +29,7 @@ public partial class MetrajeViewModel : ObservableObject
     }
 
     public bool HasResult => Metraje.HasValue;
+    public bool HasNoResult => !HasResult;
     public bool HasError => !string.IsNullOrWhiteSpace(Error);
     public string MetrajeDisplay => Metraje?.ToString("N2") ?? "--";
     public string AreaDisplay => AreaM2?.ToString("N2") ?? "--";
@@ -92,6 +93,7 @@ public partial class MetrajeViewModel : ObservableObject
     private void NotifyResults()
     {
         OnPropertyChanged(nameof(HasResult));
+        OnPropertyChanged(nameof(HasNoResult));
         OnPropertyChanged(nameof(MetrajeDisplay));
         OnPropertyChanged(nameof(AreaDisplay));
     }

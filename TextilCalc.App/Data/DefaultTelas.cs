@@ -42,5 +42,5 @@ internal static class DefaultTelas
     ];
 
     private static Tela New(string nombre, double gramatura) =>
-        new() { Nombre = nombre, Gramatura = gramatura };
+        new() { Nombre = nombre.Trim().ToUpper(System.Globalization.CultureInfo.CurrentCulture), Gramatura = gramatura };
 }
