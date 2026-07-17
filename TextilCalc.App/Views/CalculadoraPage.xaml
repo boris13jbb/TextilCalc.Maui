@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="TextilCalc.App.Views.CalculadoraPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:TextilCalc.App.ViewModels"
+    x:DataType="vm:CalculadoraViewModel"
+    Title="Calculadora">
+    <ContentPage.Resources>
+        <Style x:Key="CalcButton" TargetType="Button">
+            <Setter Property="HeightRequest" Value="{OnIdiom Phone=48, Desktop=54}" />
+            <Setter Property="Padding" Value="4" />
+            <Setter Property="FontSize" Value="{OnIdiom Phone=15, Desktop=17}" />
+            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource SurfaceVariant}, Dark={StaticResource Gray600}}" />
+            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+        </Style>
+        <Style x:Key="FunctionButton" TargetType="Button" BasedOn="{StaticResource CalcButton}">
+            <Setter Property="BackgroundColor" Value="{StaticResource Secondary}" />
+            <Setter Property="TextColor" Value="White" />
+        </Style>
+        <Style x:Key="OperatorButton" TargetType="Button" BasedOn="{StaticResource CalcButton}">
+            <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+            <Setter Property="TextColor" Value="White" />
+        </Style>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="{OnIdiom Phone='12,14,12,30', Desktop='36,24'}"
+            Spacing="10"
+            MaximumWidthRequest="720"
+            HorizontalOptions="Center">
+            <Border Padding="18" StrokeShape="RoundRectangle 16" HeightRequest="145">
+                <VerticalStackLayout HorizontalOptions="End" VerticalOptions="Center">
+                    <Label Text="{Binding AngleUnit}" HorizontalTextAlignment="End" TextColor="{StaticResource Gray500}" />
+                    <Label Text="{Binding PreviousExpression}" HorizontalTextAlignment="End" LineBreakMode="TailTruncation" />
+                    <Label
+                        Text="{Binding DisplayValue}"
+                        HorizontalTextAlignment="End"
+                        FontSize="{OnIdiom Phone=32, Desktop=40}"
+                        FontAttributes="Bold"
+                        LineBreakMode="TailTruncation" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                <Button
+                    Text="{Binding IsExpanded, StringFormat='Científica: {0}'}"
+                    Command="{Binding ApplyFunctionCommand}"
+                    CommandParameter="TOGGLE"
+                    Style="{StaticResource SecondaryButtonStyle}" />
+                <Button
+                    Grid.Column="1"
+                    Text="{Binding AngleUnit}"
+                    Command="{Binding ApplyFunctionCommand}"
+                    CommandParameter="ANGLE"
+                    Style="{StaticResource FunctionButton}" />
+            </Grid>
+
+            <VerticalStackLayout IsVisible="{Binding IsExpanded}" Spacing="6">
+                <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="6">
+                    <Button Text="sin" Command="{Binding ApplyFunctionCommand}" CommandParameter="SIN" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="1" Text="cos" Command="{Binding ApplyFunctionCommand}" CommandParameter="COS" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="2" Text="tan" Command="{Binding ApplyFunctionCommand}" CommandParameter="TAN" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="3" Text="π" Command="{Binding ApplyFunctionCommand}" CommandParameter="PI" Style="{StaticResource FunctionButton}" />
+                </Grid>
+                <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="6">
+                    <Button Text="asin" Command="{Binding ApplyFunctionCommand}" CommandParameter="ASIN" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="1" Text="acos" Command="{Binding ApplyFunctionCommand}" CommandParameter="ACOS" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="2" Text="atan" Command="{Binding ApplyFunctionCommand}" CommandParameter="ATAN" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="3" Text="e" Command="{Binding ApplyFunctionCommand}" CommandParameter="E" Style="{StaticResource FunctionButton}" />
+                </Grid>
+                <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="6">
+                    <Button Text="sinh" Command="{Binding ApplyFunctionCommand}" CommandParameter="SINH" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="1" Text="cosh" Command="{Binding ApplyFunctionCommand}" CommandParameter="COSH" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="2" Text="tanh" Command="{Binding ApplyFunctionCommand}" CommandParameter="TANH" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="3" Text="RND" Command="{Binding ApplyFunctionCommand}" CommandParameter="RND" Style="{StaticResource FunctionButton}" />
+                </Grid>
+                <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="6">
+                    <Button Text="log" Command="{Binding ApplyFunctionCommand}" CommandParameter="LOG" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="1" Text="ln" Command="{Binding ApplyFunctionCommand}" CommandParameter="LN" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="2" Text="log₂" Command="{Binding ApplyFunctionCommand}" CommandParameter="LOG2" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="3" Text="exp" Command="{Binding ApplyFunctionCommand}" CommandParameter="EXP" Style="{StaticResource FunctionButton}" />
+                </Grid>
+                <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="6">
+                    <Button Text="x²" Command="{Binding ApplyFunctionCommand}" CommandParameter="SQUARE" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="1" Text="x³" Command="{Binding ApplyFunctionCommand}" CommandParameter="CUBE" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="2" Text="√" Command="{Binding ApplyFunctionCommand}" CommandParameter="SQRT" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="3" Text="∛" Command="{Binding ApplyFunctionCommand}" CommandParameter="CBRT" Style="{StaticResource FunctionButton}" />
+                </Grid>
+                <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="6">
+                    <Button Text="10ˣ" Command="{Binding ApplyFunctionCommand}" CommandParameter="TENPOWER" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="1" Text="2ˣ" Command="{Binding ApplyFunctionCommand}" CommandParameter="TWOPOWER" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="2" Text="eˣ" Command="{Binding ApplyFunctionCommand}" CommandParameter="EPOWER" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="3" Text="x^y" Command="{Binding InputCommand}" CommandParameter="^" Style="{StaticResource FunctionButton}" />
+                </Grid>
+                <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="6">
+                    <Button Text="x!" Command="{Binding ApplyFunctionCommand}" CommandParameter="FACTORIAL" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="1" Text="1/x" Command="{Binding ApplyFunctionCommand}" CommandParameter="RECIPROCAL" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="2" Text="|x|" Command="{Binding ApplyFunctionCommand}" CommandParameter="ABS" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="3" Text="mod" Command="{Binding InputCommand}" CommandParameter="mod" Style="{StaticResource FunctionButton}" />
+                </Grid>
+                <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="6">
+                    <Button Text="⌊x⌋" Command="{Binding ApplyFunctionCommand}" CommandParameter="FLOOR" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="1" Text="⌈x⌉" Command="{Binding ApplyFunctionCommand}" CommandParameter="CEIL" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="2" Text="round" Command="{Binding ApplyFunctionCommand}" CommandParameter="ROUND" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="3" Text="±" Command="{Binding ApplyFunctionCommand}" CommandParameter="SIGN" Style="{StaticResource FunctionButton}" />
+                </Grid>
+                <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="6">
+                    <Button Text="MC" Command="{Binding MemoryCommand}" CommandParameter="MC" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="1" Text="MR" Command="{Binding MemoryCommand}" CommandParameter="MR" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="2" Text="M+" Command="{Binding MemoryCommand}" CommandParameter="M+" Style="{StaticResource FunctionButton}" />
+                    <Button Grid.Column="3" Text="M-" Command="{Binding MemoryCommand}" CommandParameter="M-" Style="{StaticResource FunctionButton}" />
+                </Grid>
+            </VerticalStackLayout>
+
+            <Grid ColumnDefinitions="*,*,*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" ColumnSpacing="6" RowSpacing="6">
+                <Button Text="(" Command="{Binding InputCommand}" CommandParameter="(" Style="{StaticResource CalcButton}" />
+                <Button Grid.Column="1" Text=")" Command="{Binding InputCommand}" CommandParameter=")" Style="{StaticResource CalcButton}" />
+                <Button Grid.Column="2" Text="C" Command="{Binding InputCommand}" CommandParameter="C" BackgroundColor="{StaticResource Error}" />
+                <Button Grid.Column="3" Text="⌫" Command="{Binding InputCommand}" CommandParameter="⌫" BackgroundColor="{StaticResource Error}" />
+
+                <Button Grid.Row="1" Text="7" Command="{Binding InputCommand}" CommandParameter="7" Style="{StaticResource CalcButton}" />
+                <Button Grid.Row="1" Grid.Column="1" Text="8" Command="{Binding InputCommand}" CommandParameter="8" Style="{StaticResource CalcButton}" />
+                <Button Grid.Row="1" Grid.Column="2" Text="9" Command="{Binding InputCommand}" CommandParameter="9" Style="{StaticResource CalcButton}" />
+                <Button Grid.Row="1" Grid.Column="3" Text="÷" Command="{Binding InputCommand}" CommandParameter="÷" Style="{StaticResource OperatorButton}" />
+
+                <Button Grid.Row="2" Text="4" Command="{Binding InputCommand}" CommandParameter="4" Style="{StaticResource CalcButton}" />
+                <Button Grid.Row="2" Grid.Column="1" Text="5" Command="{Binding InputCommand}" CommandParameter="5" Style="{StaticResource CalcButton}" />
+                <Button Grid.Row="2" Grid.Column="2" Text="6" Command="{Binding InputCommand}" CommandParameter="6" Style="{StaticResource CalcButton}" />
+                <Button Grid.Row="2" Grid.Column="3" Text="×" Command="{Binding InputCommand}" CommandParameter="×" Style="{StaticResource OperatorButton}" />
+
+                <Button Grid.Row="3" Text="1" Command="{Binding InputCommand}" CommandParameter="1" Style="{StaticResource CalcButton}" />
+                <Button Grid.Row="3" Grid.Column="1" Text="2" Command="{Binding InputCommand}" CommandParameter="2" Style="{StaticResource CalcButton}" />
+                <Button Grid.Row="3" Grid.Column="2" Text="3" Command="{Binding InputCommand}" CommandParameter="3" Style="{StaticResource CalcButton}" />
+                <Button Grid.Row="3" Grid.Column="3" Text="-" Command="{Binding InputCommand}" CommandParameter="-" Style="{StaticResource OperatorButton}" />
+
+                <Button Grid.Row="4" Text="0" Command="{Binding InputCommand}" CommandParameter="0" Style="{StaticResource CalcButton}" />
+                <Button Grid.Row="4" Grid.Column="1" Text="." Command="{Binding InputCommand}" CommandParameter="." Style="{StaticResource CalcButton}" />
+                <Button Grid.Row="4" Grid.Column="2" Text="%" Command="{Binding ApplyFunctionCommand}" CommandParameter="PERCENT" Style="{StaticResource FunctionButton}" />
+                <Button Grid.Row="4" Grid.Column="3" Text="+" Command="{Binding InputCommand}" CommandParameter="+" Style="{StaticResource OperatorButton}" />
+
+                <Button Grid.Row="5" Grid.ColumnSpan="4" Text="=" Command="{Binding InputCommand}" CommandParameter="=" Style="{StaticResource OperatorButton}" />
+            </Grid>
+
+            <Button Text="Volver al menú" Command="{Binding GoBackCommand}" Style="{StaticResource SecondaryButtonStyle}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

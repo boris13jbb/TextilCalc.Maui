@@ -1,0 +1,54 @@
+## .NET build outputs
+[Bb]in/
+[Oo]bj/
+[Aa]rtifacts/
+[Ll]og/
+[Ll]ogs/
+
+## Visual Studio / Rider / VS Code / Cursor
+.vs/
+.idea/
+.vscode/
+.cursor/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Test and coverage outputs
+[Tt]est[Rr]esult*/
+[Cc]overage*/
+*.coverage
+*.coveragexml
+
+## NuGet
+*.nupkg
+*.snupkg
+packages/
+
+## .NET MAUI generated packages and platform outputs
+*.apk
+*.aab
+*.appx
+*.appxbundle
+*.msix
+*.msixbundle
+*.ipa
+
+## Signing material and local secrets
+*.pfx
+*.p12
+*.keystore
+*.jks
+*.mobileprovision
+*.cer
+*.key
+.env
+.env.*
+secrets.json
+appsettings.*.local.json
+
+## Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini

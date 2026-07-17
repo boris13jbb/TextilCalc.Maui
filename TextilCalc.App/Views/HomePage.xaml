@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="TextilCalc.App.Views.HomePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:TextilCalc.App.ViewModels"
+    x:DataType="vm:HomeViewModel"
+    Title="TextilCalc">
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="{OnIdiom Phone='20,24,20,32', Desktop='48,36'}"
+            Spacing="20"
+            MaximumWidthRequest="900"
+            HorizontalOptions="Center">
+            <Label
+                Text="TextilCalc"
+                FontSize="{OnIdiom Phone=32, Desktop=40}"
+                FontAttributes="Bold"
+                TextColor="{StaticResource Primary}"
+                HorizontalTextAlignment="Center" />
+            <Label
+                Text="Sistema de gestión textil"
+                FontSize="18"
+                TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}"
+                HorizontalTextAlignment="Center" />
+
+            <Grid
+                Margin="0,16,0,0"
+                RowDefinitions="Auto,Auto"
+                ColumnDefinitions="*,*"
+                RowSpacing="14"
+                ColumnSpacing="14">
+                <Button
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text="📏&#10;Calcular gramatura"
+                    Command="{Binding OpenGramaturaCommand}"
+                    Style="{StaticResource MenuButtonStyle}" />
+                <Button
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Text="📐&#10;Calcular metraje"
+                    Command="{Binding OpenMetrajeCommand}"
+                    Style="{StaticResource MenuButtonStyle}"
+                    BackgroundColor="{StaticResource Secondary}" />
+                <Button
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Text="🧵&#10;Gestión de telas"
+                    Command="{Binding OpenTelasCommand}"
+                    Style="{StaticResource MenuButtonStyle}"
+                    BackgroundColor="{StaticResource Tertiary}" />
+                <Button
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Text="🧮&#10;Calculadora"
+                    Command="{Binding OpenCalculatorCommand}"
+                    Style="{StaticResource MenuButtonStyle}" />
+            </Grid>
+
+            <Button
+                Margin="0,16,0,0"
+                Text="SALIR DE LA APLICACIÓN"
+                Command="{Binding ExitCommand}"
+                Style="{StaticResource SecondaryButtonStyle}"
+                TextColor="{StaticResource Error}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

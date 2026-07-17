@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="TextilCalc.App.Views.GramaturaPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:TextilCalc.App.ViewModels"
+    x:DataType="vm:GramaturaViewModel"
+    Title="Cálculo de gramatura">
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="{OnIdiom Phone='20,20,20,36', Desktop='48,32'}"
+            Spacing="16"
+            MaximumWidthRequest="760"
+            HorizontalOptions="Center">
+            <Border Style="{StaticResource CardStyle}">
+                <Label
+                    Text="Ingrese los datos de la pieza de tela"
+                    FontSize="18"
+                    FontAttributes="Bold" />
+            </Border>
+
+            <Label Text="Metraje de pieza (m)" FontAttributes="Bold" />
+            <Border Style="{StaticResource InputBorderStyle}">
+                <Entry
+                    Text="{Binding LengthText}"
+                    Keyboard="Numeric"
+                    Placeholder="Ej.: 50" />
+            </Border>
+
+            <Label Text="Ancho de pieza (m)" FontAttributes="Bold" />
+            <Border Style="{StaticResource InputBorderStyle}">
+                <Entry
+                    Text="{Binding WidthText}"
+                    Keyboard="Numeric"
+                    Placeholder="Ej.: 1,60" />
+            </Border>
+
+            <Label Text="Peso de balanza (kg)" FontAttributes="Bold" />
+            <Border Style="{StaticResource InputBorderStyle}">
+                <Entry
+                    Text="{Binding WeightText}"
+                    Keyboard="Numeric"
+                    Placeholder="Ej.: 80" />
+            </Border>
+
+            <Label
+                Text="{Binding Error}"
+                IsVisible="{Binding HasError}"
+                TextColor="{StaticResource Error}"
+                FontAttributes="Bold" />
+
+            <Border Style="{StaticResource CardStyle}">
+                <Grid
+                    RowDefinitions="Auto,Auto,Auto"
+                    ColumnDefinitions="*,Auto"
+                    RowSpacing="10">
+                    <Label Text="Gramatura (GSM)" FontAttributes="Bold" />
+                    <Label Grid.Column="1" Text="{Binding GsmDisplay}" FontSize="22" TextColor="{StaticResource Primary}" />
+                    <Label Grid.Row="1" Text="Área (m²)" />
+                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding AreaDisplay}" />
+                    <Label Grid.Row="2" Text="Rendimiento (m²/kg)" />
+                    <Label Grid.Row="2" Grid.Column="1" Text="{Binding RendimientoDisplay}" />
+                </Grid>
+            </Border>
+
+            <Grid
+                ColumnDefinitions="*,*"
+                RowDefinitions="Auto,Auto"
+                ColumnSpacing="12"
+                RowSpacing="12">
+                <Button Text="Calcular" Command="{Binding CalculateCommand}" Style="{StaticResource PrimaryButtonStyle}" />
+                <Button Grid.Column="1" Text="Limpiar" Command="{Binding ClearCommand}" Style="{StaticResource SecondaryButtonStyle}" />
+                <Button Grid.Row="1" Text="Volver" Command="{Binding GoBackCommand}" Style="{StaticResource SecondaryButtonStyle}" />
+                <Button Grid.Row="1" Grid.Column="1" Text="Calculadora" Command="{Binding OpenCalculatorCommand}" BackgroundColor="{StaticResource Tertiary}" />
+            </Grid>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
