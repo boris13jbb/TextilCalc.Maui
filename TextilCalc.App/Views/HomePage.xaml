@@ -4,123 +4,525 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:vm="clr-namespace:TextilCalc.App.ViewModels"
+    x:Name="PageRoot"
     x:DataType="vm:HomeViewModel"
-    Title="Inicio">
-    <ScrollView HorizontalOptions="Fill">
-        <VerticalStackLayout
-            Padding="{OnIdiom Phone='18,22,18,36', Tablet='32,30,32,44', Desktop='48,38,48,52'}"
-            Spacing="18"
-            MaximumWidthRequest="860"
-            HorizontalOptions="Fill">
-            <VerticalStackLayout Spacing="5">
-                <Label Text="TextilCalc" Style="{StaticResource PageTitle}" />
-                <Label
-                    Text="Herramientas precisas para tu operación textil"
-                    Style="{StaticResource PageSubtitle}" />
-            </VerticalStackLayout>
+    Title="Inicio"
+    Shell.NavBarIsVisible="False">
 
-            <Border
-                Style="{StaticResource TextilCard}"
-                BackgroundColor="{AppThemeBinding Light={StaticResource PrimarySoft}, Dark={StaticResource PrimarySoftDark}}"
-                Stroke="{StaticResource Primary}">
-                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
+    <Grid x:Name="RootLayout" ColumnDefinitions="Auto,*">
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="ResponsiveStates">
+                <VisualState x:Name="Narrow">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter TargetName="RootLayout" Property="ColumnDefinitions" Value="*" />
+                        <Setter TargetName="SidebarPanel" Property="IsVisible" Value="False" />
+                        <Setter TargetName="MobileBrandRow" Property="IsVisible" Value="True" />
+                        <Setter TargetName="ToolsGrid" Property="ColumnDefinitions" Value="*,*" />
+                        <Setter TargetName="ToolsGrid" Property="RowDefinitions" Value="Auto,Auto" />
+                        <Setter TargetName="CardGramatura" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="CardGramatura" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="CardMetraje" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="CardMetraje" Property="Grid.Column" Value="1" />
+                        <Setter TargetName="CardTelas" Property="Grid.Row" Value="1" />
+                        <Setter TargetName="CardTelas" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="CardCalc" Property="Grid.Row" Value="1" />
+                        <Setter TargetName="CardCalc" Property="Grid.Column" Value="1" />
+                        <Setter TargetName="InfoGrid" Property="ColumnDefinitions" Value="*" />
+                        <Setter TargetName="InfoGrid" Property="RowDefinitions" Value="Auto,Auto" />
+                        <Setter TargetName="InfoOffline" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="InfoOffline" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="InfoExcel" Property="Grid.Row" Value="1" />
+                        <Setter TargetName="InfoExcel" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="StatsGrid" Property="IsVisible" Value="False" />
+                        <Setter TargetName="HeroActions" Property="ColumnDefinitions" Value="*,*" />
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState x:Name="Medium">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="700" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter TargetName="RootLayout" Property="ColumnDefinitions" Value="*" />
+                        <Setter TargetName="SidebarPanel" Property="IsVisible" Value="False" />
+                        <Setter TargetName="MobileBrandRow" Property="IsVisible" Value="True" />
+                        <Setter TargetName="ToolsGrid" Property="ColumnDefinitions" Value="*,*" />
+                        <Setter TargetName="ToolsGrid" Property="RowDefinitions" Value="Auto,Auto" />
+                        <Setter TargetName="CardGramatura" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="CardGramatura" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="CardMetraje" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="CardMetraje" Property="Grid.Column" Value="1" />
+                        <Setter TargetName="CardTelas" Property="Grid.Row" Value="1" />
+                        <Setter TargetName="CardTelas" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="CardCalc" Property="Grid.Row" Value="1" />
+                        <Setter TargetName="CardCalc" Property="Grid.Column" Value="1" />
+                        <Setter TargetName="InfoGrid" Property="ColumnDefinitions" Value="*,*" />
+                        <Setter TargetName="InfoGrid" Property="RowDefinitions" Value="Auto" />
+                        <Setter TargetName="InfoOffline" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="InfoOffline" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="InfoExcel" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="InfoExcel" Property="Grid.Column" Value="1" />
+                        <Setter TargetName="StatsGrid" Property="IsVisible" Value="True" />
+                        <Setter TargetName="HeroActions" Property="ColumnDefinitions" Value="Auto,Auto,*" />
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState x:Name="Wide">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1000" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter TargetName="RootLayout" Property="ColumnDefinitions" Value="Auto,*" />
+                        <Setter TargetName="SidebarPanel" Property="IsVisible" Value="True" />
+                        <Setter TargetName="MobileBrandRow" Property="IsVisible" Value="False" />
+                        <Setter TargetName="ToolsGrid" Property="ColumnDefinitions" Value="*,*" />
+                        <Setter TargetName="ToolsGrid" Property="RowDefinitions" Value="Auto,Auto" />
+                        <Setter TargetName="CardGramatura" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="CardGramatura" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="CardMetraje" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="CardMetraje" Property="Grid.Column" Value="1" />
+                        <Setter TargetName="CardTelas" Property="Grid.Row" Value="1" />
+                        <Setter TargetName="CardTelas" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="CardCalc" Property="Grid.Row" Value="1" />
+                        <Setter TargetName="CardCalc" Property="Grid.Column" Value="1" />
+                        <Setter TargetName="InfoGrid" Property="ColumnDefinitions" Value="*,*" />
+                        <Setter TargetName="InfoGrid" Property="RowDefinitions" Value="Auto" />
+                        <Setter TargetName="InfoOffline" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="InfoOffline" Property="Grid.Column" Value="0" />
+                        <Setter TargetName="InfoExcel" Property="Grid.Row" Value="0" />
+                        <Setter TargetName="InfoExcel" Property="Grid.Column" Value="1" />
+                        <Setter TargetName="StatsGrid" Property="IsVisible" Value="True" />
+                        <Setter TargetName="HeroActions" Property="ColumnDefinitions" Value="Auto,Auto,*" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <!-- Sidebar desktop: navegación real a las mismas rutas -->
+        <Border
+            x:Name="SidebarPanel"
+            Style="{StaticResource SidebarPanel}"
+            IsVisible="False">
+            <Grid RowDefinitions="Auto,*,Auto" RowSpacing="18">
+                <VerticalStackLayout Spacing="14">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                        <Border
+                            WidthRequest="44"
+                            HeightRequest="44"
+                            BackgroundColor="White"
+                            Stroke="Transparent"
+                            StrokeShape="RoundRectangle 12">
+                            <Label
+                                Text="TC"
+                                TextColor="{StaticResource Primary}"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="15"
+                                HorizontalTextAlignment="Center"
+                                VerticalTextAlignment="Center" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                            <Label Text="TextilCalc" TextColor="White" FontFamily="OpenSansSemibold" FontSize="18" />
+                            <Label Text="Suite de cálculo textil" TextColor="#D8B4FE" FontSize="12" />
+                        </VerticalStackLayout>
+                    </Grid>
+
                     <Border
-                        WidthRequest="48"
-                        HeightRequest="48"
-                        BackgroundColor="{StaticResource Primary}"
+                        BackgroundColor="#33FFFFFF"
                         Stroke="Transparent"
-                        StrokeShape="RoundRectangle 14">
+                        StrokeShape="RoundRectangle 20"
+                        Padding="10,6"
+                        HorizontalOptions="Start">
+                        <HorizontalStackLayout Spacing="8">
+                            <BoxView WidthRequest="8" HeightRequest="8" CornerRadius="4" Color="{StaticResource StatusOnline}" VerticalOptions="Center" />
+                            <Label Text="Operación local · Sin conexión" TextColor="White" FontSize="11" VerticalTextAlignment="Center" />
+                        </HorizontalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Row="1" Spacing="6" VerticalOptions="Start">
+                    <Button Text="Inicio" Style="{StaticResource SidebarNavButtonActive}" IsEnabled="False" />
+                    <Button
+                        Text="Gramatura"
+                        Command="{Binding OpenGramaturaCommand}"
+                        Style="{StaticResource SidebarNavButton}"
+                        SemanticProperties.Hint="Abrir cálculo de gramatura" />
+                    <Button
+                        Text="Metraje"
+                        Command="{Binding OpenMetrajeCommand}"
+                        Style="{StaticResource SidebarNavButton}"
+                        SemanticProperties.Hint="Abrir cálculo de metraje" />
+                    <Button
+                        Text="Gestión de telas"
+                        Command="{Binding OpenTelasCommand}"
+                        Style="{StaticResource SidebarNavButton}"
+                        SemanticProperties.Hint="Abrir catálogo de telas" />
+                    <Button
+                        Text="Calculadora"
+                        Command="{Binding OpenCalculatorCommand}"
+                        Style="{StaticResource SidebarNavButton}"
+                        SemanticProperties.Hint="Abrir calculadora científica" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Row="2" Spacing="10">
+                    <Button
+                        Text="Salir"
+                        Command="{Binding ExitCommand}"
+                        Style="{StaticResource SidebarNavButton}"
+                        SemanticProperties.Hint="Cerrar TextilCalc" />
+                    <Label
+                        Text="{Binding AppVersion, StringFormat='v{0} · Windows / Android'}"
+                        TextColor="#C4B5FD"
+                        FontSize="11"
+                        HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </Grid>
+        </Border>
+
+        <ScrollView Grid.Column="1" HorizontalOptions="Fill">
+            <VerticalStackLayout
+                Padding="{OnIdiom Phone='16,18,16,28', Tablet='28,24,28,36', Desktop='36,28,36,40'}"
+                Spacing="20"
+                MaximumWidthRequest="1100"
+                HorizontalOptions="Fill">
+
+                <!-- Encabezado móvil / tablet -->
+                <Grid
+                    x:Name="MobileBrandRow"
+                    ColumnDefinitions="*,Auto"
+                    ColumnSpacing="12">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                        <Border
+                            WidthRequest="42"
+                            HeightRequest="42"
+                            BackgroundColor="{StaticResource Primary}"
+                            Stroke="Transparent"
+                            StrokeShape="RoundRectangle 12">
+                            <Label
+                                Text="TC"
+                                TextColor="White"
+                                FontFamily="OpenSansSemibold"
+                                FontSize="14"
+                                HorizontalTextAlignment="Center"
+                                VerticalTextAlignment="Center" />
+                        </Border>
+                        <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                            <Label Text="TextilCalc" Style="{StaticResource SectionTitle}" FontSize="18" />
+                            <Label Text="Herramientas para tu operación textil" Style="{StaticResource MutedText}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                    <Button
+                        Grid.Column="1"
+                        Text="{Binding ThemeToggleLabel}"
+                        Command="{Binding ToggleThemeCommand}"
+                        Style="{StaticResource ThemeToggleButton}"
+                        VerticalOptions="Center"
+                        AutomationId="ToggleThemeButton"
+                        SemanticProperties.Hint="Alternar entre tema claro y oscuro" />
+                </Grid>
+
+                <!-- Título de página (desktop) + acciones -->
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                    <VerticalStackLayout Spacing="4" VerticalOptions="Center">
+                        <Label Text="¿Qué deseas calcular hoy?" Style="{StaticResource PageTitle}" FontSize="{OnIdiom Phone=24, Tablet=28, Desktop=30}" />
+                        <Label Text="Resumen de herramientas y accesos rápidos" Style="{StaticResource PageSubtitle}" />
+                    </VerticalStackLayout>
+                    <Button
+                        Grid.Column="1"
+                        Text="{Binding ThemeToggleLabel}"
+                        Command="{Binding ToggleThemeCommand}"
+                        Style="{StaticResource ThemeToggleButton}"
+                        IsVisible="{OnIdiom Phone=False, Tablet=False, Desktop=True}"
+                        VerticalOptions="Start"
+                        SemanticProperties.Hint="Alternar entre tema claro y oscuro" />
+                </Grid>
+
+                <!-- Hero real -->
+                <Border Style="{StaticResource HeroBanner}" SemanticProperties.Description="Panel principal de TextilCalc">
+                    <VerticalStackLayout Spacing="14">
+                        <Border
+                            BackgroundColor="#33FFFFFF"
+                            Stroke="Transparent"
+                            StrokeShape="RoundRectangle 16"
+                            Padding="10,5"
+                            HorizontalOptions="Start">
+                            <HorizontalStackLayout Spacing="8">
+                                <BoxView WidthRequest="8" HeightRequest="8" CornerRadius="4" Color="{StaticResource StatusOnline}" VerticalOptions="Center" />
+                                <Label Text="LISTO PARA TRABAJAR" TextColor="White" FontSize="11" FontFamily="OpenSansSemibold" />
+                            </HorizontalStackLayout>
+                        </Border>
+
                         <Label
-                            Text="TC"
+                            Text="Precisión textil en cada cálculo."
                             TextColor="White"
                             FontFamily="OpenSansSemibold"
-                            HorizontalTextAlignment="Center"
-                            VerticalTextAlignment="Center" />
-                    </Border>
-                    <VerticalStackLayout Grid.Column="1" Spacing="3" VerticalOptions="Center">
-                        <Label Text="Panel de trabajo" Style="{StaticResource SectionTitle}" />
+                            FontSize="{OnIdiom Phone=22, Tablet=24, Desktop=26}" />
                         <Label
-                            Text="Selecciona una herramienta para comenzar."
-                            Style="{StaticResource MutedText}" />
+                            Text="Gramatura, metraje, catálogo y calculadora en un solo lugar."
+                            TextColor="#E9D5FF"
+                            FontSize="14" />
+
+                        <Grid x:Name="HeroActions" ColumnDefinitions="*,*" ColumnSpacing="10" RowSpacing="10">
+                            <Button
+                                Text="+ Nueva medición"
+                                Command="{Binding OpenGramaturaCommand}"
+                                Style="{StaticResource HeroPrimaryButton}"
+                                SemanticProperties.Hint="Abrir cálculo de gramatura"
+                                AutomationId="HeroNuevaMedicion" />
+                            <Button
+                                Grid.Column="1"
+                                Text="Ver catálogo"
+                                Command="{Binding OpenTelasCommand}"
+                                Style="{StaticResource HeroSecondaryButton}"
+                                SemanticProperties.Hint="Abrir gestión de telas"
+                                AutomationId="HeroVerCatalogo" />
+                        </Grid>
                     </VerticalStackLayout>
+                </Border>
+
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Herramientas" Style="{StaticResource SectionTitle}" />
+                    <Label Text="Accesos rápidos a las funciones de la app" Style="{StaticResource MutedText}" />
+                </VerticalStackLayout>
+
+                <!-- Tarjetas de herramientas: mismos comandos existentes -->
+                <Grid
+                    x:Name="ToolsGrid"
+                    ColumnDefinitions="*,*"
+                    RowDefinitions="Auto,Auto"
+                    ColumnSpacing="12"
+                    RowSpacing="12">
+
+                    <Border
+                        x:Name="CardGramatura"
+                        Style="{StaticResource ToolCard}"
+                        SemanticProperties.Description="Calcular gramatura. GSM, área y rendimiento.">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenGramaturaCommand}" />
+                        </Border.GestureRecognizers>
+                        <Grid RowDefinitions="*,Auto">
+                            <VerticalStackLayout Padding="16,16,16,10" Spacing="10">
+                                <Border
+                                    WidthRequest="40"
+                                    HeightRequest="40"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource PrimarySoft}, Dark={StaticResource PrimarySoftDark}}"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 12"
+                                    HorizontalOptions="Start">
+                                    <Label Text="G" TextColor="{StaticResource Primary}" FontFamily="OpenSansSemibold" FontSize="16" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                                </Border>
+                                <Label Text="Gramatura" Style="{StaticResource ListItemTitle}" />
+                                <Label Text="GSM, área y rendimiento" Style="{StaticResource MutedText}" />
+                            </VerticalStackLayout>
+                            <Border
+                                Grid.Row="1"
+                                BackgroundColor="{AppThemeBinding Light={StaticResource PrimarySoft}, Dark={StaticResource PrimarySoftDark}}"
+                                Stroke="Transparent"
+                                Padding="14,10">
+                                <Label Text="Abrir  ›" Style="{StaticResource ToolCardOpenLabel}" TextColor="{StaticResource Primary}" />
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <Border
+                        x:Name="CardMetraje"
+                        Grid.Column="1"
+                        Style="{StaticResource ToolCard}"
+                        SemanticProperties.Description="Calcular metraje. Peso, gramatura y ancho.">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenMetrajeCommand}" />
+                        </Border.GestureRecognizers>
+                        <Grid RowDefinitions="*,Auto">
+                            <VerticalStackLayout Padding="16,16,16,10" Spacing="10">
+                                <Border
+                                    WidthRequest="40"
+                                    HeightRequest="40"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource SecondarySoft}, Dark={StaticResource SecondarySoftDark}}"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 12"
+                                    HorizontalOptions="Start">
+                                    <Label Text="M" TextColor="{StaticResource Secondary}" FontFamily="OpenSansSemibold" FontSize="16" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                                </Border>
+                                <Label Text="Metraje" Style="{StaticResource ListItemTitle}" />
+                                <Label Text="Peso, ancho y longitud" Style="{StaticResource MutedText}" />
+                            </VerticalStackLayout>
+                            <Border
+                                Grid.Row="1"
+                                BackgroundColor="{AppThemeBinding Light={StaticResource SecondarySoft}, Dark={StaticResource SecondarySoftDark}}"
+                                Stroke="Transparent"
+                                Padding="14,10">
+                                <Label Text="Abrir  ›" Style="{StaticResource ToolCardOpenLabel}" TextColor="{StaticResource Secondary}" />
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <Border
+                        x:Name="CardTelas"
+                        Grid.Row="1"
+                        Style="{StaticResource ToolCard}"
+                        SemanticProperties.Description="Gestión de telas. Catálogo e Excel.">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenTelasCommand}" />
+                        </Border.GestureRecognizers>
+                        <Grid RowDefinitions="*,Auto">
+                            <VerticalStackLayout Padding="16,16,16,10" Spacing="10">
+                                <Border
+                                    WidthRequest="40"
+                                    HeightRequest="40"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource TertiarySoft}, Dark={StaticResource TertiarySoftDark}}"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 12"
+                                    HorizontalOptions="Start">
+                                    <Label Text="T" TextColor="{StaticResource Tertiary}" FontFamily="OpenSansSemibold" FontSize="16" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                                </Border>
+                                <Label Text="Telas" Style="{StaticResource ListItemTitle}" />
+                                <Label Text="Catálogo y Excel" Style="{StaticResource MutedText}" />
+                            </VerticalStackLayout>
+                            <Border
+                                Grid.Row="1"
+                                BackgroundColor="{AppThemeBinding Light={StaticResource TertiarySoft}, Dark={StaticResource TertiarySoftDark}}"
+                                Stroke="Transparent"
+                                Padding="14,10">
+                                <Label Text="Abrir  ›" Style="{StaticResource ToolCardOpenLabel}" TextColor="{StaticResource Tertiary}" />
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                    <Border
+                        x:Name="CardCalc"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Style="{StaticResource ToolCard}"
+                        SemanticProperties.Description="Calculadora científica.">
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenCalculatorCommand}" />
+                        </Border.GestureRecognizers>
+                        <Grid RowDefinitions="*,Auto">
+                            <VerticalStackLayout Padding="16,16,16,10" Spacing="10">
+                                <Border
+                                    WidthRequest="40"
+                                    HeightRequest="40"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceMuted}, Dark={StaticResource SurfaceMutedDark}}"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 12"
+                                    HorizontalOptions="Start">
+                                    <Label Text="∑" TextColor="{StaticResource IconSlate}" FontFamily="OpenSansSemibold" FontSize="16" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                                </Border>
+                                <Label Text="Calculadora" Style="{StaticResource ListItemTitle}" />
+                                <Label Text="Básica y científica" Style="{StaticResource MutedText}" />
+                            </VerticalStackLayout>
+                            <Border
+                                Grid.Row="1"
+                                BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceMuted}, Dark={StaticResource SurfaceMutedDark}}"
+                                Stroke="Transparent"
+                                Padding="14,10">
+                                <Label Text="Abrir  ›" Style="{StaticResource ToolCardOpenLabel}" TextColor="{StaticResource IconSlate}" />
+                            </Border>
+                        </Grid>
+                    </Border>
                 </Grid>
-            </Border>
 
-            <Label Text="Herramientas" Style="{StaticResource SectionTitle}" Margin="0,4,0,0" />
+                <Label Text="Información rápida" Style="{StaticResource SectionTitle}" />
 
-            <VerticalStackLayout Spacing="12">
-                <Border Style="{StaticResource TextilCard}" Padding="16" SemanticProperties.Description="Calcular gramatura. Obtén GSM, área y rendimiento de una pieza.">
-                    <Border.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding OpenGramaturaCommand}" />
-                    </Border.GestureRecognizers>
-                    <Grid ColumnDefinitions="44,*,Auto" ColumnSpacing="14">
-                        <Border BackgroundColor="{AppThemeBinding Light={StaticResource PrimarySoft}, Dark={StaticResource PrimarySoftDark}}" Stroke="Transparent" StrokeShape="RoundRectangle 12">
-                            <Label Text="G" FontSize="18" FontFamily="OpenSansSemibold" TextColor="{StaticResource Primary}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
-                        </Border>
-                        <VerticalStackLayout Grid.Column="1" Spacing="2">
-                            <Label Text="Calcular gramatura" Style="{StaticResource SectionTitle}" FontSize="16" />
-                            <Label Text="Obtén GSM, área y rendimiento de una pieza." Style="{StaticResource MutedText}" />
-                        </VerticalStackLayout>
-                        <Label Grid.Column="2" Text="›" FontSize="28" TextColor="{StaticResource Primary}" VerticalTextAlignment="Center" />
-                    </Grid>
-                </Border>
+                <Grid
+                    x:Name="InfoGrid"
+                    ColumnDefinitions="*"
+                    RowDefinitions="Auto,Auto"
+                    ColumnSpacing="12"
+                    RowSpacing="12">
+                    <Border x:Name="InfoOffline" Style="{StaticResource InfoCard}">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                            <Border
+                                WidthRequest="40"
+                                HeightRequest="40"
+                                BackgroundColor="{AppThemeBinding Light={StaticResource SuccessSoft}, Dark={StaticResource SuccessSoftDark}}"
+                                Stroke="Transparent"
+                                StrokeShape="RoundRectangle 20">
+                                <Label Text="✓" TextColor="{StaticResource Success}" FontFamily="OpenSansSemibold" FontSize="16" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                <Label Text="Sin conexión" Style="{StaticResource ListItemTitle}" />
+                                <Label Text="Tus datos permanecen en el dispositivo." Style="{StaticResource MutedText}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
 
-                <Border Style="{StaticResource TextilCard}" Padding="16" SemanticProperties.Description="Calcular metraje. Convierte peso, gramatura y ancho en metros.">
-                    <Border.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding OpenMetrajeCommand}" />
-                    </Border.GestureRecognizers>
-                    <Grid ColumnDefinitions="44,*,Auto" ColumnSpacing="14">
-                        <Border BackgroundColor="{AppThemeBinding Light={StaticResource SuccessSoft}, Dark={StaticResource SuccessSoftDark}}" Stroke="Transparent" StrokeShape="RoundRectangle 12">
-                            <Label Text="M" FontSize="18" FontFamily="OpenSansSemibold" TextColor="{StaticResource Secondary}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
-                        </Border>
-                        <VerticalStackLayout Grid.Column="1" Spacing="2">
-                            <Label Text="Calcular metraje" Style="{StaticResource SectionTitle}" FontSize="16" />
-                            <Label Text="Convierte peso, gramatura y ancho en metros." Style="{StaticResource MutedText}" />
-                        </VerticalStackLayout>
-                        <Label Grid.Column="2" Text="›" FontSize="28" TextColor="{StaticResource Primary}" VerticalTextAlignment="Center" />
-                    </Grid>
-                </Border>
+                    <Border x:Name="InfoExcel" Grid.Row="1" Style="{StaticResource InfoCard}">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                            <Border
+                                WidthRequest="40"
+                                HeightRequest="40"
+                                BackgroundColor="{AppThemeBinding Light={StaticResource TertiarySoft}, Dark={StaticResource TertiarySoftDark}}"
+                                Stroke="Transparent"
+                                StrokeShape="RoundRectangle 20">
+                                <Label Text="X" TextColor="{StaticResource Tertiary}" FontFamily="OpenSansSemibold" FontSize="15" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" Spacing="2" VerticalOptions="Center">
+                                <Label Text="Archivos Excel" Style="{StaticResource ListItemTitle}" />
+                                <Label Text="Importa y exporta tu catálogo fácilmente." Style="{StaticResource MutedText}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+                </Grid>
 
-                <Border Style="{StaticResource TextilCard}" Padding="16" SemanticProperties.Description="Gestión de telas. Administra el catálogo e importa o exporta Excel.">
-                    <Border.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding OpenTelasCommand}" />
-                    </Border.GestureRecognizers>
-                    <Grid ColumnDefinitions="44,*,Auto" ColumnSpacing="14">
-                        <Border BackgroundColor="{AppThemeBinding Light={StaticResource PrimarySoft}, Dark={StaticResource PrimarySoftDark}}" Stroke="Transparent" StrokeShape="RoundRectangle 12">
-                            <Label Text="T" FontSize="18" FontFamily="OpenSansSemibold" TextColor="{StaticResource Tertiary}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
-                        </Border>
-                        <VerticalStackLayout Grid.Column="1" Spacing="2">
-                            <Label Text="Gestión de telas" Style="{StaticResource SectionTitle}" FontSize="16" />
-                            <Label Text="Administra el catálogo e importa o exporta Excel." Style="{StaticResource MutedText}" />
-                        </VerticalStackLayout>
-                        <Label Grid.Column="2" Text="›" FontSize="28" TextColor="{StaticResource Primary}" VerticalTextAlignment="Center" />
-                    </Grid>
-                </Border>
+                <!-- Stats desktop/tablet: hechos reales de la app -->
+                <Grid
+                    x:Name="StatsGrid"
+                    IsVisible="False"
+                    ColumnDefinitions="*,*,*"
+                    ColumnSpacing="12">
+                    <Border Style="{StaticResource InfoCard}">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                            <Border WidthRequest="42" HeightRequest="42" BackgroundColor="{StaticResource PrimarySoft}" Stroke="Transparent" StrokeShape="RoundRectangle 10">
+                                <Label Text="04" TextColor="{StaticResource Primary}" FontFamily="OpenSansSemibold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" Spacing="1" VerticalOptions="Center">
+                                <Label Text="Herramientas activas" Style="{StaticResource ListItemTitle}" FontSize="14" />
+                                <Label Text="Gramatura, metraje, telas y calculadora." Style="{StaticResource MutedText}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Column="1" Style="{StaticResource InfoCard}">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                            <Border WidthRequest="42" HeightRequest="42" BackgroundColor="{StaticResource SecondarySoft}" Stroke="Transparent" StrokeShape="RoundRectangle 10">
+                                <Label Text="OK" TextColor="{StaticResource Secondary}" FontFamily="OpenSansSemibold" FontSize="12" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" Spacing="1" VerticalOptions="Center">
+                                <Label Text="Sin conexión" Style="{StaticResource ListItemTitle}" FontSize="14" />
+                                <Label Text="Datos locales en el dispositivo." Style="{StaticResource MutedText}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Column="2" Style="{StaticResource InfoCard}">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                            <Border WidthRequest="42" HeightRequest="42" BackgroundColor="{StaticResource TertiarySoft}" Stroke="Transparent" StrokeShape="RoundRectangle 10">
+                                <Label Text="XLS" TextColor="{StaticResource Tertiary}" FontFamily="OpenSansSemibold" FontSize="11" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+                            </Border>
+                            <VerticalStackLayout Grid.Column="1" Spacing="1" VerticalOptions="Center">
+                                <Label Text="Importar / exportar" Style="{StaticResource ListItemTitle}" FontSize="14" />
+                                <Label Text="Compatible con archivos Excel." Style="{StaticResource MutedText}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Border>
+                </Grid>
 
-                <Border Style="{StaticResource TextilCard}" Padding="16" SemanticProperties.Description="Calculadora científica. Realiza operaciones básicas y avanzadas.">
-                    <Border.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding OpenCalculatorCommand}" />
-                    </Border.GestureRecognizers>
-                    <Grid ColumnDefinitions="44,*,Auto" ColumnSpacing="14">
-                        <Border BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceMuted}, Dark={StaticResource SurfaceMutedDark}}" Stroke="Transparent" StrokeShape="RoundRectangle 12">
-                            <Label Text="∑" FontSize="18" FontFamily="OpenSansSemibold" TextColor="{StaticResource Primary}" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
-                        </Border>
-                        <VerticalStackLayout Grid.Column="1" Spacing="2">
-                            <Label Text="Calculadora científica" Style="{StaticResource SectionTitle}" FontSize="16" />
-                            <Label Text="Realiza operaciones básicas y avanzadas." Style="{StaticResource MutedText}" />
-                        </VerticalStackLayout>
-                        <Label Grid.Column="2" Text="›" FontSize="28" TextColor="{StaticResource Primary}" VerticalTextAlignment="Center" />
-                    </Grid>
-                </Border>
+                <!-- Exit secundario en móvil (en desktop está en el sidebar) -->
+                <Grid ColumnDefinitions="*,Auto" IsVisible="{OnIdiom Phone=True, Tablet=True, Desktop=False}">
+                    <Label
+                        Text="{Binding AppVersion, StringFormat='Versión {0}'}"
+                        Style="{StaticResource MutedText}"
+                        VerticalTextAlignment="Center" />
+                    <Button
+                        Grid.Column="1"
+                        Text="Salir"
+                        Command="{Binding ExitCommand}"
+                        Style="{StaticResource GhostAction}"
+                        SemanticProperties.Hint="Cerrar TextilCalc" />
+                </Grid>
             </VerticalStackLayout>
-
-            <Button
-                Margin="0,10,0,0"
-                Text="Salir de la aplicación"
-                Command="{Binding ExitCommand}"
-                Style="{StaticResource DangerAction}"
-                HorizontalOptions="Start"
-                SemanticProperties.Hint="Cierra TextilCalc" />
-        </VerticalStackLayout>
-    </ScrollView>
+        </ScrollView>
+    </Grid>
 </ContentPage>

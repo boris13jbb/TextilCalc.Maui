@@ -16,11 +16,18 @@ public partial class App : Application
 
     protected override Window CreateWindow(IActivationState? activationState)
     {
-        return new Window(_appShell)
+        var window = new Window(_appShell)
         {
-            Title = "TextilCalc",
-            MinimumWidth = 390,
-            MinimumHeight = 650
+            Title = "TextilCalc"
         };
+
+        // MinimumWidth/Height solo existen de forma confiable en escritorio.
+        if (DeviceInfo.Platform == DevicePlatform.WinUI)
+        {
+            window.MinimumWidth = 390;
+            window.MinimumHeight = 650;
+        }
+
+        return window;
     }
 }

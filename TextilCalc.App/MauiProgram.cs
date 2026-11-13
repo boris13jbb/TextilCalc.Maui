@@ -30,7 +30,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<ITelaRepository, TelaRepository>();
         builder.Services.AddSingleton<IExcelService, ExcelService>();
         builder.Services.AddSingleton<IUserDialogService, UserDialogService>();
-        builder.Services.AddSingleton<IFileSaver>(FileSaver.Default);
+        // Lazy: evita resolver FileSaver antes de que Android tenga Activity.
+        builder.Services.AddSingleton<IFileSaver>(_ => FileSaver.Default);
         builder.Services.AddSingleton<ExpressionEvaluator>();
         builder.Services.AddSingleton<NavigationTutorialService>();
 

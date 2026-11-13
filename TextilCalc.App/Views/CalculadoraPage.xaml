@@ -52,36 +52,28 @@
             Spacing="14"
             MaximumWidthRequest="580"
             HorizontalOptions="Fill">
-            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
-                <Border
-                    WidthRequest="30"
-                    HeightRequest="30"
-                    BackgroundColor="{StaticResource Primary}"
-                    Stroke="Transparent"
-                    StrokeShape="RoundRectangle 8">
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                <Grid WidthRequest="40" HeightRequest="40">
+                    <Border Style="{StaticResource ListIcon}" BackgroundColor="{StaticResource IconSlate}">
+                        <Label
+                            Text="∑"
+                            TextColor="White"
+                            FontSize="16"
+                            FontFamily="OpenSansSemibold"
+                            HorizontalTextAlignment="Center"
+                            VerticalTextAlignment="Center" />
+                    </Border>
+                    <BoxView Style="{StaticResource StatusDot}" />
+                </Grid>
+                <VerticalStackLayout Grid.Column="1" Spacing="3" VerticalOptions="Center">
                     <Label
-                        Text="✣"
-                        TextColor="White"
-                        FontSize="19"
-                        HorizontalTextAlignment="Center"
-                        VerticalTextAlignment="Center" />
-                </Border>
-                <Label
-                    Grid.Column="1"
-                    Text="TextilCalc"
-                    FontSize="20"
-                    FontFamily="OpenSansSemibold"
-                    VerticalTextAlignment="Center" />
+                        Text="Calculadora"
+                        FontSize="{OnIdiom Phone=26, Tablet=28, Desktop=30}"
+                        FontFamily="OpenSansSemibold"
+                        TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource White}}" />
+                    <Label Text="Operaciones básicas y científicas con memoria." Style="{StaticResource PageSubtitle}" />
+                </VerticalStackLayout>
             </Grid>
-
-            <VerticalStackLayout Spacing="3" Margin="0,8,0,2">
-                <Label
-                    Text="Calculadora"
-                    FontSize="{OnIdiom Phone=38, Tablet=36, Desktop=36}"
-                    FontFamily="OpenSansSemibold"
-                    TextColor="{AppThemeBinding Light={StaticResource TextPrimary}, Dark={StaticResource White}}" />
-                <Label Text="Operaciones básicas y científicas con memoria." Style="{StaticResource PageSubtitle}" />
-            </VerticalStackLayout>
 
             <Border Style="{StaticResource TextilCard}" Padding="18" HeightRequest="{OnIdiom Phone=190, Tablet=170, Desktop=170}">
                 <Grid RowDefinitions="Auto,*,Auto">

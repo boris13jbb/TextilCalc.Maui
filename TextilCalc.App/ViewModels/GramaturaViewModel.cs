@@ -33,9 +33,9 @@ public partial class GramaturaViewModel : ObservableObject
     public bool HasResult => Gsm.HasValue;
     public bool HasNoResult => !HasResult;
     public bool HasError => !string.IsNullOrWhiteSpace(Error);
-    public string GsmDisplay => Gsm?.ToString("N4") ?? "--";
-    public string AreaDisplay => AreaM2?.ToString("N4") ?? "--";
-    public string RendimientoDisplay => Rendimiento?.ToString("N4") ?? "--";
+    public string GsmDisplay => Gsm?.ToString("N2") ?? "--";
+    public string AreaDisplay => AreaM2?.ToString("N2") ?? "--";
+    public string RendimientoDisplay => Rendimiento?.ToString("N2") ?? "--";
 
     partial void OnLengthTextChanged(string value) => Save();
     partial void OnWidthTextChanged(string value) => Save();

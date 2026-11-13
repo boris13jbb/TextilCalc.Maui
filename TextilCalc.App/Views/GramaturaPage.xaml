@@ -3,7 +3,9 @@
     x:Class="TextilCalc.App.Views.GramaturaPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviors="clr-namespace:TextilCalc.App.Behaviors"
     xmlns:vm="clr-namespace:TextilCalc.App.ViewModels"
+    x:Name="PageRoot"
     x:DataType="vm:GramaturaViewModel"
     Title="Cálculo de gramatura">
     <ScrollView HorizontalOptions="Fill">
@@ -12,11 +14,27 @@
             Spacing="18"
             MaximumWidthRequest="820"
             HorizontalOptions="Fill">
-            <VerticalStackLayout Spacing="5">
-                <Label Text="Cálculo de gramatura" Style="{StaticResource PageTitle}" />
-                <Label
-                    Text="Determina GSM, área y rendimiento a partir de una pieza pesada."
-                    Style="{StaticResource PageSubtitle}" />
+            <VerticalStackLayout Spacing="6">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                    <Grid WidthRequest="40" HeightRequest="40">
+                        <Border Style="{StaticResource ListIcon}" BackgroundColor="{StaticResource IconIndigo}">
+                            <Label
+                                Text="G"
+                                FontSize="16"
+                                FontFamily="OpenSansSemibold"
+                                TextColor="White"
+                                HorizontalTextAlignment="Center"
+                                VerticalTextAlignment="Center" />
+                        </Border>
+                        <BoxView Style="{StaticResource StatusDot}" />
+                    </Grid>
+                    <VerticalStackLayout Grid.Column="1" Spacing="3" VerticalOptions="Center">
+                        <Label Text="Cálculo de gramatura" Style="{StaticResource PageTitle}" FontSize="{OnIdiom Phone=24, Tablet=28, Desktop=30}" />
+                        <Label
+                            Text="Determina GSM, área y rendimiento a partir de una pieza pesada."
+                            Style="{StaticResource PageSubtitle}" />
+                    </VerticalStackLayout>
+                </Grid>
             </VerticalStackLayout>
 
             <Border Style="{StaticResource TextilCard}">
@@ -34,7 +52,12 @@
                                 Keyboard="Numeric"
                                 Placeholder="Ej. 50"
                                 ReturnType="Next"
-                                SemanticProperties.Hint="Ingresa el largo de la pieza en metros" />
+                                SemanticProperties.Hint="Ingresa el largo de la pieza en metros">
+                                <Entry.Behaviors>
+                                    <behaviors:EnterKeyCommandBehavior
+                                        Command="{Binding BindingContext.CalculateCommand, Source={x:Reference PageRoot}}" />
+                                </Entry.Behaviors>
+                            </Entry>
                         </Border>
                     </VerticalStackLayout>
 
@@ -46,7 +69,12 @@
                                 Keyboard="Numeric"
                                 Placeholder="Ej. 1,60"
                                 ReturnType="Next"
-                                SemanticProperties.Hint="Ingresa el ancho de la pieza en metros" />
+                                SemanticProperties.Hint="Ingresa el ancho de la pieza en metros">
+                                <Entry.Behaviors>
+                                    <behaviors:EnterKeyCommandBehavior
+                                        Command="{Binding BindingContext.CalculateCommand, Source={x:Reference PageRoot}}" />
+                                </Entry.Behaviors>
+                            </Entry>
                         </Border>
                     </VerticalStackLayout>
 
@@ -58,7 +86,12 @@
                                 Keyboard="Numeric"
                                 Placeholder="Ej. 80"
                                 ReturnType="Done"
-                                SemanticProperties.Hint="Ingresa el peso de la pieza en kilogramos" />
+                                SemanticProperties.Hint="Ingresa el peso de la pieza en kilogramos">
+                                <Entry.Behaviors>
+                                    <behaviors:EnterKeyCommandBehavior
+                                        Command="{Binding BindingContext.CalculateCommand, Source={x:Reference PageRoot}}" />
+                                </Entry.Behaviors>
+                            </Entry>
                         </Border>
                     </VerticalStackLayout>
 
@@ -101,23 +134,13 @@
                                 TextColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
                         </VerticalStackLayout>
                     </Border>
-                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
-                        <VerticalStackLayout Spacing="2">
-                            <Label Text="Área total" Style="{StaticResource MutedText}" />
-                            <Label Text="{Binding AreaDisplay, StringFormat='{}{0} m²'}" FontFamily="OpenSansSemibold" FontSize="17" />
-                        </VerticalStackLayout>
-                        <VerticalStackLayout Grid.Column="1" Spacing="2">
-                            <Label Text="Rendimiento" Style="{StaticResource MutedText}" />
-                            <Label Text="{Binding RendimientoDisplay, StringFormat='{}{0} m²/kg'}" FontFamily="OpenSansSemibold" FontSize="17" />
-                        </VerticalStackLayout>
-                    </Grid>
                 </VerticalStackLayout>
             </Border>
 
             <Border IsVisible="{Binding HasNoResult}" Style="{StaticResource TextilCard}">
                 <VerticalStackLayout Spacing="4">
                     <Label Text="Resultado pendiente" Style="{StaticResource SectionTitle}" HorizontalTextAlignment="Center" />
-                    <Label Text="Completa los datos y pulsa «Calcular gramatura»." Style="{StaticResource MutedText}" HorizontalTextAlignment="Center" />
+                    <Label Text="Completa los datos y pulsa Enter o «Calcular gramatura»." Style="{StaticResource MutedText}" HorizontalTextAlignment="Center" />
                 </VerticalStackLayout>
             </Border>
 

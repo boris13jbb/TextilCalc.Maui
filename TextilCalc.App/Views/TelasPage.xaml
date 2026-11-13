@@ -4,7 +4,9 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:models="clr-namespace:TextilCalc.App.Models"
+    xmlns:behaviors="clr-namespace:TextilCalc.App.Behaviors"
     xmlns:vm="clr-namespace:TextilCalc.App.ViewModels"
+    x:Name="PageRoot"
     x:DataType="vm:TelasViewModel"
     Title="Gestión de telas"
     BackgroundColor="{AppThemeBinding Light={StaticResource PageBackground}, Dark={StaticResource PageBackgroundDark}}">
@@ -12,18 +14,17 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <Color x:Key="TextilPrimary">#5B21B6</Color>
-            <Color x:Key="TextilPrimarySoft">#F3E8FF</Color>
-            <Color x:Key="TextilSuccess">#047857</Color>
+            <Color x:Key="TextilPrimarySoft">#F1EAFE</Color>
+            <Color x:Key="TextilSuccess">#15A879</Color>
             <Color x:Key="TextilSuccessSoft">#ECFDF5</Color>
-            <Color x:Key="TextilDanger">#B42318</Color>
+            <Color x:Key="TextilDanger">#D7483F</Color>
             <Color x:Key="TextilDangerSoft">#FEF3F2</Color>
-            <Color x:Key="TextilText">#172033</Color>
-            <Color x:Key="TextilMuted">#64748B</Color>
-            <Color x:Key="TextilBorder">#E2E8F0</Color>
+            <Color x:Key="TextilText">#182033</Color>
+            <Color x:Key="TextilMuted">#6E7891</Color>
+            <Color x:Key="TextilBorder">#E7E9F1</Color>
             <Color x:Key="TextilSurface">#FFFFFF</Color>
             <Color x:Key="TextilSurfaceDark">#111827</Color>
             <Color x:Key="TextilBorderDark">#334155</Color>
-
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -69,14 +70,14 @@
 
                 <Border
                     Grid.Column="1"
-                    BackgroundColor="{AppThemeBinding Light={StaticResource TextilPrimarySoft}, Dark=#2E1065}"
-                    Stroke="{AppThemeBinding Light=#DDD6FE, Dark=#6D28D9}"
-                    StrokeShape="RoundRectangle 12"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource TextilPrimarySoft}, Dark=#1E1B4B}"
+                    Stroke="{AppThemeBinding Light=#C7D2FE, Dark=#4F46E5}"
+                    StrokeShape="RoundRectangle 10"
                     Padding="{OnIdiom Phone='10,0', Tablet='16,0', Desktop='18,0'}"
                     MinimumHeightRequest="48">
                     <Label
                         Text="{Binding Telas.Count, StringFormat='{}{0} telas'}"
-                        TextColor="{AppThemeBinding Light={StaticResource TextilPrimary}, Dark=#D8B4FE}"
+                        TextColor="{AppThemeBinding Light={StaticResource TextilPrimary}, Dark=#A5B4FC}"
                         FontAttributes="Bold"
                         VerticalTextAlignment="Center" />
                 </Border>
@@ -231,34 +232,36 @@
 
                 <Border
                     x:Name="CatalogCard"
-                    Style="{StaticResource TextilCard}">
-                    <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="14">
-                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
-                            <VerticalStackLayout Spacing="3">
-                                <Label
-                                    Text="Catálogo de telas"
-                                    Style="{StaticResource SectionTitle}" />
-                                <Label
-                                    Text="Selecciona una tela para editarla o calcular su metraje."
-                                    Style="{StaticResource MutedText}" />
-                            </VerticalStackLayout>
+                    Style="{StaticResource ListPanel}"
+                    Padding="0">
+                    <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="0">
+                        <Border
+                            Padding="{OnIdiom Phone='14,14', Tablet='16,15', Desktop='18,16'}"
+                            Stroke="Transparent"
+                            StrokeThickness="0">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                                <VerticalStackLayout Spacing="3">
+                                    <Label Text="Catálogo de telas" Style="{StaticResource SectionTitle}" />
+                                    <Label
+                                        Text="Selecciona una tela para editarla o calcular su metraje."
+                                        Style="{StaticResource MutedText}" />
+                                </VerticalStackLayout>
 
-                            <Border
-                                Grid.Column="1"
-                                BackgroundColor="{AppThemeBinding Light=#F8FAFC, Dark=#1E293B}"
-                                Stroke="{AppThemeBinding Light={StaticResource TextilBorder}, Dark={StaticResource TextilBorderDark}}"
-                                StrokeShape="RoundRectangle 10"
-                                Padding="12,7"
-                                VerticalOptions="Center">
                                 <Label
-                                    Text="Nombre · Gramatura · Ancho"
-                                    Style="{StaticResource MutedText}"
-                                    IsVisible="{OnIdiom Phone=False, Tablet=True, Desktop=True}" />
-                            </Border>
-                        </Grid>
+                                    Grid.Column="1"
+                                    Text="Nombre · GSM · Ancho"
+                                    Style="{StaticResource InlineActionText}"
+                                    IsVisible="{OnIdiom Phone=False, Tablet=True, Desktop=True}"
+                                    VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+
+                        <BoxView
+                            Grid.Row="1"
+                            Style="{StaticResource ListDivider}" />
 
                         <CollectionView
-                            Grid.Row="1"
+                            Grid.Row="2"
                             ItemsSource="{Binding Telas}"
                             SelectedItem="{Binding SelectedTela}"
                             SelectionMode="Single"
@@ -284,47 +287,48 @@
                                 </VerticalStackLayout>
                             </CollectionView.EmptyView>
                             <CollectionView.ItemsLayout>
-                                <LinearItemsLayout Orientation="Vertical" ItemSpacing="8" />
+                                <LinearItemsLayout Orientation="Vertical" ItemSpacing="0" />
                             </CollectionView.ItemsLayout>
 
                             <CollectionView.ItemTemplate>
                                 <DataTemplate x:DataType="models:Tela">
                                     <Border
-                                        Padding="{OnIdiom Phone='10,11', Tablet='12,11', Desktop='14,12'}"
-                                        BackgroundColor="{AppThemeBinding Light=#FFFFFF, Dark=#111827}"
-                                        Stroke="{AppThemeBinding Light={StaticResource TextilBorder}, Dark={StaticResource TextilBorderDark}}"
-                                        StrokeThickness="1"
-                                        StrokeShape="RoundRectangle 12">
+                                        Padding="{OnIdiom Phone='14,13', Tablet='16,14', Desktop='18,15'}"
+                                        BackgroundColor="Transparent"
+                                        Stroke="Transparent"
+                                        StrokeThickness="0">
 
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroup x:Name="CommonStates">
                                                 <VisualState x:Name="Normal" />
                                                 <VisualState x:Name="Selected">
                                                     <VisualState.Setters>
-                                                        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource TextilPrimarySoft}, Dark=#2E1065}" />
-                                                        <Setter Property="Stroke" Value="{StaticResource TextilPrimary}" />
-                                                        <Setter Property="StrokeThickness" Value="2" />
+                                                        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource TextilPrimarySoft}, Dark=#1E1B4B}" />
                                                     </VisualState.Setters>
                                                 </VisualState>
                                             </VisualStateGroup>
                                         </VisualStateManager.VisualStateGroups>
 
-                                        <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="{OnIdiom Phone=8, Tablet=10, Desktop=12}">
-                                            <Border
-                                                WidthRequest="{OnIdiom Phone=38, Tablet=42, Desktop=44}"
-                                                HeightRequest="{OnIdiom Phone=38, Tablet=42, Desktop=44}"
-                                                BackgroundColor="{AppThemeBinding Light=#EEF2FF, Dark=#312E81}"
-                                                Stroke="Transparent"
-                                                StrokeShape="RoundRectangle 10"
+                                        <Grid
+                                            ColumnDefinitions="Auto,*,Auto,Auto"
+                                            ColumnSpacing="{OnIdiom Phone=10, Tablet=12, Desktop=14}">
+                                            <Grid
+                                                WidthRequest="40"
+                                                HeightRequest="40"
                                                 VerticalOptions="Center">
-                                                <Label
-                                                    Text="T"
-                                                    TextColor="{AppThemeBinding Light={StaticResource TextilPrimary}, Dark=#C4B5FD}"
-                                                    FontAttributes="Bold"
-                                                    FontSize="16"
-                                                    HorizontalTextAlignment="Center"
-                                                    VerticalTextAlignment="Center" />
-                                            </Border>
+                                                <Border
+                                                    Style="{StaticResource ListIcon}"
+                                                    BackgroundColor="{StaticResource IconBlue}">
+                                                    <Label
+                                                        Text="T"
+                                                        TextColor="White"
+                                                        FontFamily="OpenSansSemibold"
+                                                        FontSize="15"
+                                                        HorizontalTextAlignment="Center"
+                                                        VerticalTextAlignment="Center" />
+                                                </Border>
+                                                <BoxView Style="{StaticResource StatusDot}" />
+                                            </Grid>
 
                                             <VerticalStackLayout
                                                 Grid.Column="1"
@@ -332,20 +336,16 @@
                                                 VerticalOptions="Center">
                                                 <Label
                                                     Text="{Binding Nombre}"
-                                                    FontAttributes="Bold"
-                                                    FontSize="{OnIdiom Phone=14, Tablet=15, Desktop=15}"
-                                                    TextColor="{AppThemeBinding Light={StaticResource TextilText}, Dark=White}"
-                                                    LineBreakMode="TailTruncation" />
+                                                    Style="{StaticResource ListItemTitle}"
+                                                    FontSize="{OnIdiom Phone=14, Tablet=15, Desktop=15}" />
                                                 <Label
                                                     Style="{StaticResource MutedText}"
                                                     LineBreakMode="TailTruncation">
                                                     <Label.FormattedText>
                                                         <FormattedString>
-                                                            <Span Text="Gramatura " />
-                                                            <Span Text="{Binding Gramatura, StringFormat='{0:0.##}'}" FontAttributes="Bold" />
-                                                            <Span Text=" g/m²   ·   Ancho " />
-                                                            <Span Text="{Binding Ancho, StringFormat='{0:0.##}'}" FontAttributes="Bold" />
-                                                            <Span Text=" m" />
+                                                            <Span Text="{Binding Gramatura, StringFormat='{0:0.##} g/m²'}" />
+                                                            <Span Text="  ·  " />
+                                                            <Span Text="{Binding Ancho, StringFormat='{0:0.##} m'}" />
                                                         </FormattedString>
                                                     </Label.FormattedText>
                                                 </Label>
@@ -353,10 +353,10 @@
 
                                             <Button
                                                 Grid.Column="2"
-                                                Text="{OnIdiom Phone='✎', Tablet='Editar', Desktop='Editar'}"
+                                                Text="Editar"
                                                 Command="{Binding ShowEditFormCommand, Source={RelativeSource AncestorType={x:Type vm:TelasViewModel}}, x:DataType=vm:TelasViewModel}"
                                                 CommandParameter="{Binding .}"
-                                                Style="{StaticResource CompactSecondaryAction}"
+                                                Style="{StaticResource GhostAction}"
                                                 SemanticProperties.Description="Editar tela" />
 
                                             <Button
@@ -372,18 +372,25 @@
                             </CollectionView.ItemTemplate>
                         </CollectionView>
 
-                        <Grid Grid.Row="2" ColumnDefinitions="*,Auto" ColumnSpacing="12">
-                            <Label
-                                Text="{Binding Telas.Count, StringFormat='{}{0} telas encontradas'}"
-                                Style="{StaticResource MutedText}"
-                                VerticalTextAlignment="Center" />
-                            <Label
-                                Grid.Column="1"
-                                Text="Haz clic en una fila para seleccionarla"
-                                Style="{StaticResource MutedText}"
-                                IsVisible="{OnIdiom Phone=False, Tablet=True, Desktop=True}"
-                                VerticalTextAlignment="Center" />
-                        </Grid>
+                        <Border
+                            Grid.Row="3"
+                            Padding="{OnIdiom Phone='14,12', Tablet='16,12', Desktop='18,12'}"
+                            Stroke="Transparent"
+                            StrokeThickness="0"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource SurfaceMuted}, Dark={StaticResource SurfaceMutedDark}}">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                                <Label
+                                    Text="{Binding Telas.Count, StringFormat='{}{0} telas encontradas'}"
+                                    Style="{StaticResource MutedText}"
+                                    VerticalTextAlignment="Center" />
+                                <Label
+                                    Grid.Column="1"
+                                    Text="Toca una fila para seleccionarla"
+                                    Style="{StaticResource MutedText}"
+                                    IsVisible="{OnIdiom Phone=False, Tablet=True, Desktop=True}"
+                                    VerticalTextAlignment="Center" />
+                            </Grid>
+                        </Border>
                     </Grid>
                 </Border>
 
@@ -395,20 +402,20 @@
                     <Border Style="{StaticResource TextilCard}">
                         <VerticalStackLayout Spacing="16">
                             <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
-                                <Border
-                                    WidthRequest="42"
-                                    HeightRequest="42"
-                                    BackgroundColor="{AppThemeBinding Light={StaticResource TextilPrimarySoft}, Dark=#2E1065}"
-                                    Stroke="Transparent"
-                                    StrokeShape="RoundRectangle 11">
-                                    <Label
-                                        Text="∑"
-                                        FontSize="20"
-                                        FontAttributes="Bold"
-                                        TextColor="{AppThemeBinding Light={StaticResource TextilPrimary}, Dark=#D8B4FE}"
-                                        HorizontalTextAlignment="Center"
-                                        VerticalTextAlignment="Center" />
-                                </Border>
+                                <Grid WidthRequest="40" HeightRequest="40">
+                                    <Border
+                                        Style="{StaticResource ListIcon}"
+                                        BackgroundColor="{StaticResource IconIndigo}">
+                                        <Label
+                                            Text="∑"
+                                            FontSize="16"
+                                            FontFamily="OpenSansSemibold"
+                                            TextColor="White"
+                                            HorizontalTextAlignment="Center"
+                                            VerticalTextAlignment="Center" />
+                                    </Border>
+                                    <BoxView Style="{StaticResource StatusDot}" />
+                                </Grid>
 
                                 <VerticalStackLayout Grid.Column="1" Spacing="3" VerticalOptions="Center">
                                     <Label
@@ -422,9 +429,9 @@
 
                             <Border
                                 IsVisible="{Binding HasSelection}"
-                                BackgroundColor="{AppThemeBinding Light=#FAF5FF, Dark=#2E1065}"
-                                Stroke="{AppThemeBinding Light=#DDD6FE, Dark=#6D28D9}"
-                                StrokeShape="RoundRectangle 14"
+                                BackgroundColor="{AppThemeBinding Light={StaticResource TextilPrimarySoft}, Dark=#1E1B4B}"
+                                Stroke="{AppThemeBinding Light=#C7D2FE, Dark=#4F46E5}"
+                                StrokeShape="RoundRectangle 12"
                                 Padding="16">
                                 <VerticalStackLayout Spacing="10">
                                     <Label
@@ -432,12 +439,12 @@
                                         FontSize="11"
                                         FontAttributes="Bold"
                                         CharacterSpacing="1.2"
-                                        TextColor="{AppThemeBinding Light={StaticResource TextilMuted}, Dark=#C4B5FD}" />
+                                        TextColor="{AppThemeBinding Light={StaticResource TextilMuted}, Dark=#A5B4FC}" />
                                     <Label
                                         Text="{Binding SelectedTela.Nombre}"
                                         FontSize="20"
                                         FontAttributes="Bold"
-                                        TextColor="{AppThemeBinding Light={StaticResource TextilPrimary}, Dark=#E9D5FF}"
+                                        TextColor="{AppThemeBinding Light={StaticResource TextilPrimary}, Dark=#E0E7FF}"
                                         LineBreakMode="TailTruncation" />
 
                                     <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
@@ -502,7 +509,13 @@
                                         Text="{Binding PesoBalanza}"
                                         Keyboard="Numeric"
                                         Placeholder="Ej. 45"
-                                        ReturnType="Done" />
+                                        ReturnType="Done"
+                                        SemanticProperties.Hint="Ingresa el peso y pulsa Enter para calcular">
+                                        <Entry.Behaviors>
+                                            <behaviors:EnterKeyCommandBehavior
+                                                Command="{Binding BindingContext.CalculateMetrajeCommand, Source={x:Reference PageRoot}}" />
+                                        </Entry.Behaviors>
+                                    </Entry>
                                 </Border>
                             </VerticalStackLayout>
 

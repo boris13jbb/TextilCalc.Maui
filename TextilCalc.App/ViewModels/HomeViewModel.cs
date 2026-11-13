@@ -1,16 +1,26 @@
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using TextilCalc.App.Services;
 
 namespace TextilCalc.App.ViewModels;
 
-public sealed partial class HomeViewModel
+public sealed partial class HomeViewModel : ObservableObject
 {
     private readonly IUserDialogService _dialogs;
 
     public HomeViewModel(IUserDialogService dialogs)
     {
         _dialogs = dialogs;
+        AppVersion = AppInfo.Current.VersionString;
+        RefreshThemeLabel();
     }
+
+    /// <summary>Versión real de la app (ApplicationDisplayVersion / empaquetado).</summary>
+    public string AppVersion { get; }
+
+    /// <summary>Etiqueta del botón de tema según el tema efectivo actual.</summary>
+    [ObservableProperty]
+    public partial string ThemeToggleLabel { get; set; } = "Tema";
 
     [RelayCommand]
     private static Task OpenGramaturaAsync() => Shell.Current.GoToAsync(nameof(Views.GramaturaPage));
@@ -23,6 +33,24 @@ public sealed partial class HomeViewModel
 
     [RelayCommand]
     private static Task OpenCalculatorAsync() => Shell.Current.GoToAsync(nameof(Views.CalculadoraPage));
+
+    /// <summary>Alterna claro/oscuro de forma real mediante UserAppTheme.</summary>
+    [RelayCommand]
+    private void ToggleTheme()
+    {
+        var app = Application.Current;
+        if (app is null)
+        {
+            return;
+        }
+
+        var effective = app.RequestedTheme;
+        app.UserAppTheme = effective == AppTheme.Dark
+            ? AppTheme.Light
+            : AppTheme.Dark;
+
+        RefreshThemeLabel();
+    }
 
     [RelayCommand]
     private async Task ExitAsync()
@@ -43,5 +71,11 @@ public sealed partial class HomeViewModel
         {
             application.CloseWindow(window);
         }
+    }
+
+    private void RefreshThemeLabel()
+    {
+        var effective = Application.Current?.RequestedTheme ?? AppTheme.Unspecified;
+        ThemeToggleLabel = effective == AppTheme.Dark ? "Claro" : "Oscuro";
     }
 }
